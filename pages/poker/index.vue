@@ -1,7 +1,7 @@
 <template>
 	<!-- 出牌效果 -->
 	<view class="content">
-		<view class="play1 palybox">
+		<!-- <view class="play1 palybox">
 			<text class="player">玩家1</text>
 			<view class="cardlist clearfix cardnormal">
 				<view class="card big card big-card" v-for='(item,index) in play1paper' :key="index" :style="cardleft(play1paper)">
@@ -13,7 +13,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<view class="play2 palybox">
 			<view class="playtext">
 				<text class="player">玩家2</text>
@@ -74,9 +74,9 @@
 			<view class="paperbox">
 				<image src="/static/paper.png" class="paper"></image>
 			</view>
-			<transition name="bounce" v-if="show">
+		<!-- 	<transition name="bounce" v-if="show">
 				<image src="/static/paper.png" class="papermove"></image>
-			</transition>
+			</transition> -->
 			<transition name="bounce1" v-if="show1">
 				<image src="/static/paper.png" class="papermove"></image>
 			</transition>
@@ -278,18 +278,17 @@
 				_this.audio.src = _this.mp3;
 				// 播放音频
 				_this.audio.play();
-				console.log(_this.play1)
-				if (_this.play1.length > 0) {
-					_this.show = !_this.show;
+				if (_this.play2.length > 0) {
+					_this.show1 = !_this.show1;
 					setTimeout(function() {
-						_this.play1paper.push(_this.play1[0]);
-						_this.sortCard(_this.play1paper)
-						_this.play1 = _this.play1.slice(1)
-						_this.show = !_this.show;
+						_this.play2paper.push(_this.play1[0]);
+						_this.sortCard(_this.play2paper)
+						_this.play2 = _this.play2.slice(1)
+						_this.show1 = !_this.show1;
 					}, 100)
 					setTimeout(function() {
-						_this.sendTwo()
-						_this.show1 = !_this.show1;
+						_this.sendThree()
+						_this.show2 = !_this.show2;
 					}, 100)
 				} else {
 					_this.showpaper = false;
@@ -297,33 +296,33 @@
 					return false;
 				}
 			},
-			sendTwo() {
-				var _this = this;
-				if (_this.play2.length > 0) {
-					setTimeout(function() {
-						_this.show1 = !_this.show1;
-					}, 100)
-					setTimeout(function() {
-						_this.play2paper.push(_this.play2[0]);
-						_this.sortCard(_this.play2paper)
-						_this.play2 = _this.play2.slice(1);
-						// 发牌结束 关闭音频
-						// if (_this.play2.length > 0) {
-						_this.show2 = !_this.show2;
-						_this.sendThree()
-						// } else {
-						// 	_this.showpaper = false;
-						// 	_this.sendBtn=true
-						// 	_this.audio.pause();
-						// }
+			// sendTwo() {
+			// 	var _this = this;
+			// 	if (_this.play2.length > 0) {
+			// 		setTimeout(function() {
+			// 			_this.show1 = !_this.show1;
+			// 		}, 100)
+			// 		setTimeout(function() {
+			// 			_this.play2paper.push(_this.play2[0]);
+			// 			_this.sortCard(_this.play2paper)
+			// 			_this.play2 = _this.play2.slice(1);
+			// 			// 发牌结束 关闭音频
+			// 			// if (_this.play2.length > 0) {
+			// 			_this.show2 = !_this.show2;
+			// 			_this.sendThree()
+			// 			// } else {
+			// 			// 	_this.showpaper = false;
+			// 			// 	_this.sendBtn=true
+			// 			// 	_this.audio.pause();
+			// 			// }
 
-					}, 200)
-				} else {
-					_this.showpaper = false;
-					_this.sendBtn = true
-					return false
-				}
-			},
+			// 		}, 200)
+			// 	} else {
+			// 		_this.showpaper = false;
+			// 		_this.sendBtn = true
+			// 		return false
+			// 	}
+			// },
 			sendThree() {
 				var _this = this;
 				if (_this.play3.length > 0) {
