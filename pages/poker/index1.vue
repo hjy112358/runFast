@@ -377,7 +377,7 @@
 						reloadarry.push(this.play3paper[index])
 					}
 				}
-				
+				console.log(this.chooseArray)
 				this.play3paper = reloadarry
 			},
 			
