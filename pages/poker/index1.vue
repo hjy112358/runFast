@@ -1,43 +1,31 @@
 <template>
 	<!-- 出牌效果 -->
 	<view class="content">
-		<!-- <view class="play1 palybox">
-			<text class="player">玩家1</text>
-			<view class="cardlist clearfix cardnormal">
-				<view class="card big card big-card" v-for='(item,index) in play1paper' :key="index" :style="cardleft(play1paper)">
-					<view class="nocheck"></view>
-					<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
-					<view class="carimg">
-						<image :src="cardimg(item)" mode="" class="card-type"></image>
-						<view class="card-num-right big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
-					</view>
-				</view>
-			</view>
-		</view> -->
 		<view class="play2 palybox">
 			<view class="playtext">
-				<text class="player">玩家2</text>
+				<text class="player">左玩家</text>
 			</view>
 			<view class="listrans">
 				<view class="cardlist clearfix">
-					<view class="card big card big-card" v-for='(item,index) in play2paper' :key="index" :style="cardtop(play2paper)">
-						<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
+					<view class="card big cardohter big-card " v-for='(item,index) in play2paper' :key="index" :style="cardtop(play2paper)">
+						<!-- <view class="card-num-left big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
 						<view class="carimg">
 							<image :src="cardimg(item)" mode="" class="card-type"></image>
 							<view class="card-num-right big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
-						</view>
+						</view> -->
+						<image src="/static/paper.png" class="paper"></image>
 					</view>
 				</view>
 			</view>
 		</view>
 		<view class="play3 palybox mybox">
 			<!-- 出牌展示区 -->
-			<view class="cardlist clearfix cardnormal">
+			<view class="cardlist clearfix cardnormal cardshowlist">
 				<view class="card big cardwrap big-card" v-for='(item,index) in chooseArray' :key="index" :style="mycardleft(play3paper,item)">
-					<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
+					<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cartext}}</view>
 					<view class="carimg">
 						<image :src="cardimg(item)" mode="" class="card-type"></image>
-						<view class="card-num-right big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
+						<view class="card-num-right big-num" :style="cardcolor(item)">{{item.cartext}}</view>
 					</view>
 				</view>
 			</view>
@@ -49,13 +37,13 @@
 					<text>出牌</text>
 				</view>
 			</view>
-			<view class="cardlist clearfix cardnormal">
-				<view class="card big cardwrap big-card" v-for='(item,index) in play3paper' :key="index" :style="mycardleft(play3paper,item)"
-				 @tap='checkCard(item,index)'>
-					<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
+			<view class="cardlist clearfix cardnormal mycarlist">
+				<view class="card big cardwrap big-card" v-for='(item,index) in play3paper' :key="index" :style="mycardleft(play3paper,item,index)"
+				 @tap='checkCard(item,index)' >
+					<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cartext}}</view>
 					<view class="carimg">
 						<image :src="cardimg(item)" mode="" class="card-type"></image>
-						<view class="card-num-right big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
+						<view class="card-num-right big-num" :style="cardcolor(item)">{{item.cartext}}</view>
 					</view>
 				</view>
 			</view>
@@ -63,16 +51,17 @@
 		</view>
 		<view class="play4 palybox">
 			<view class="playtext">
-				<text class="player">玩家4</text>
+				<text class="player">右玩家</text>
 			</view>
 			<view class="listrans">
-				<view class="cardlist clearfix">
-					<view class="card big card big-card" v-for='(item,index) in play4paper' :key="index" :style="cardtop(play4paper)">
-						<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
+				<view class="cardlist clearfix ">
+					<view class="card big cardohter big-card" v-for='(item,index) in play4paper' :key="index" :style="cardtop(play4paper)">
+						<!-- <view class="card-num-left big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
 						<view class="carimg">
 							<image :src="cardimg(item)" mode="" class="card-type"></image>
 							<view class="card-num-right big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
-						</view>
+						</view> -->
+						<image src="/static/paper.png" class="paper"></image>
 					</view>
 				</view>
 			</view>
@@ -81,9 +70,6 @@
 			<view class="paperbox">
 				<image src="/static/paper.png" class="paper"></image>
 			</view>
-			<!-- <transition name="bounce" v-if="show">
-				<image src="/static/paper.png" class="papermove"></image>
-			</transition> -->
 			<transition name="bounce1" v-if="show1">
 				<image src="/static/paper.png" class="papermove"></image>
 			</transition>
@@ -104,22 +90,17 @@
 	export default {
 		data() {
 			return {
-				play1: [],
 				play2: [],
 				play3: [],
 				play4: [],
-				play1paper: [],
 				play2paper: [],
 				play3paper: [],
 				play4paper: [],
-				show: true,
 				show1: false,
 				show2: false,
 				show3: false,
 				audio: {},
 				mp3: '/static/f.mp3',
-				// moveChange: false,
-				// first: false,
 				showpaper: true,
 				sendBtn: false,
 				chooseArray: [],
@@ -136,34 +117,25 @@
 		methods: {
 			sendpaper() {
 				// 生成指定发牌张数
-				var sendcard = this.dealPoker(54);
-				var cardOdd = []
-				var cardEven = []
-				// 随机拆分成四组，依次分发给玩家
-				for (var i = 0; i < sendcard.length; i++) {
-					if (i % 2 == 0) {
-						cardEven.push(sendcard[i])
-					} else {
-						cardOdd.push(sendcard[i])
-					}
+				var cardArr = this.dealPoker(54);
+				let PersonNum = 3; // 人数
+				let Arr = []; //根据玩家人数生成数组
+				for (let i = 0; i < PersonNum; i++) {
+					Arr.push([]);
 				}
-				for (var j = 0; j < cardEven.length; j++) {
-					if (j % 2 == 0) {
-						this.play1.push(cardEven[j])
-					} else {
-						this.play3.push(cardEven[j])
-					}
-				}
-				
-				for (var k = 0; k < cardOdd.length; k++) {
-					if (k % 2 == 0) {
-						this.play2.push(cardOdd[k])
-					} else {
-						this.play4.push(cardOdd[k])
-					}
-				}
-				// this.sendplay()
+				// 给每位玩家发牌
+				cardArr.forEach((v, v_index) => {
+					Arr.forEach((n, n_index) => {
+						if (v_index % PersonNum == n_index) {
+							n.push(v);
+						}
+					});
+				});
+				this.play2=Arr[0]
+				this.play3=Arr[1]
+				this.play4=Arr[2]
 				this.sendTwo();
+				// this.handOut(Arr,PersonNum)
 			},
 			generatePoker() {
 				// 生成扑克牌
@@ -175,44 +147,58 @@
 				// 第二步:定义13张普通牌
 				var cardValue = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 				// 第三步:定义2张特殊牌，大王与小王
-				var specialCard = [{type: 'small',cardvalue: 'JOKER',checked: false,card:16},
-				{type: 'big',cardvalue: 'JOKER',checked: false,card:17}]
+				var specialCard = [{
+						type: 'small',
+						cardvalue: 'small',
+						cartext:'JOKER',
+						checked: false,
+						card: 16
+					},
+					{
+						type: 'big',
+						cardvalue: 'big',
+						cartext:'JOKER',
+						checked: false,
+						card: 17
+					}
+				]
 				// 第四步:根据上述数组生成54张牌
 				var allCards = [];
-				
+
 				for (var i = 0, len1 = cardType.length; i < len1; i++) {
 					for (var j = 0, len2 = cardValue.length; j < len2; j++) {
 						var card;
-						if(cardValue[j]=='J'){
-							card=11
-						}else if(cardValue[j]=='Q'){
-							card=12
-						}else if(cardValue[j]=='K'){
-							card=13
-						}else if(cardValue[j]=='A'){
-							card=14
-						}else if(cardValue[j]=='2'){
-							card=15
-						}else{
-							card=cardValue[j]
+						if (cardValue[j] == 'J') {
+							card = 11
+						} else if (cardValue[j] == 'Q') {
+							card = 12
+						} else if (cardValue[j] == 'K') {
+							card = 13
+						} else if (cardValue[j] == 'A') {
+							card = 14
+						} else if (cardValue[j] == '2') {
+							card = 15
+						} else {
+							card = cardValue[j]
 						}
 						allCards.push({
 							type: cardType[i],
 							cardvalue: cardValue[j],
 							checked: false,
-							card:card
+							card: card,
+							cartext:cardValue[j]
 						});
 					}
 				}
-			
+
 				allCards = allCards.concat(specialCard);
 				return allCards;
 			},
-			// 发牌
+			// 生成指定张数的牌
 			dealPoker(num) {
-				// if (!num || num > 54 || typeof(num) !== 'number') {
-				// 	throw '错误，传入的数字非法，只能是[1-54]';
-				// }
+				if (!num || num > 54 || typeof(num) !== 'number') {
+					throw '错误，传入的数字非法，只能是[1-54]';
+				}
 				// 生成扑克牌
 				var allCards = this.generatePoker();
 				// 洗牌
@@ -237,9 +223,9 @@
 			// 根据花色显示相应颜色
 			cardcolor(item) {
 				var color;
-				if (item.type == 'fk' || item.type == 'hx'||item.type == 'big') {
+				if (item.type == 'fk' || item.type == 'hx' || item.type == 'big') {
 					color = '#f00'
-				} else if (item.type == 'mh' || item.type == 'ht'||item.type == 'small' ) {
+				} else if (item.type == 'mh' || item.type == 'ht' || item.type == 'small') {
 					color = '#000'
 				}
 				return {
@@ -257,22 +243,14 @@
 					imgsrc = '../../static/mh.png'
 				} else if (item.type == 'fk') {
 					imgsrc = '../../static/fk.png'
-				}else if (item.type == 'big') {
+				} else if (item.type == 'big') {
 					imgsrc = '../../static/big.png'
-				}else if (item.type == 'small') {
+				} else if (item.type == 'small') {
 					imgsrc = '../../static/small.png'
 				}
 				return imgsrc
 			},
-			// 改变左边玩家牌的位置
-			cardleft(play) {
-				var len = play.length;
-				var marginL = '-36rpx'
-				return {
-					marginLeft: marginL
-				}
-			},
-			// 
+			// 改变左边跟右边玩家牌的堆叠位置
 			cardtop(play) {
 				var len = play.length;
 				var marginT = '-74rpx'
@@ -280,46 +258,23 @@
 					marginTop: marginT
 				}
 			},
-			mycardleft(play, item) {
-				var len = play.length;
-				var marginL = '-60rpx';
+			// 改变当前自己牌的堆叠位置
+			mycardleft(play, item,index) {
+				var marginL = '-50rpx';
 				var marginT = '19rpx';
 				if (item.checked) {
 					marginT = '0rpx'
 				} else {
 					marginT = '19rpx'
 				}
+				if(index==0){
+					marginL = '0';
+				}
 				return {
 					marginLeft: marginL,
 					marginTop: marginT
 				}
 			},
-			// sendplay() {
-			// 	var _this = this;
-			// 	//创建音频
-			// 	_this.audio = new Audio();
-			// 	_this.audio.src = _this.mp3;
-			// 	// 播放音频
-			// 	_this.audio.play();
-			// 	console.log(_this.play1)
-			// 	if (_this.play1.length > 0) {
-			// 		_this.show = !_this.show;
-			// 		setTimeout(function() {
-			// 			_this.play1paper.push(_this.play1[0]);
-			// 			_this.sortCard(_this.play1paper)
-			// 			_this.play1 = _this.play1.slice(1)
-			// 			_this.show = !_this.show;
-			// 		}, 100)
-			// 		setTimeout(function() {
-			// 			_this.sendTwo()
-			// 			_this.show1 = !_this.show1;
-			// 		}, 100)
-			// 	} else {
-			// 		_this.showpaper = false;
-			// 		_this.sendBtn = true
-			// 		return false;
-			// 	}
-			// },
 			sendTwo() {
 				var _this = this;
 				var _this = this;
@@ -391,9 +346,10 @@
 					return false
 				}
 			},
+			// 牌的排序
 			sortCard(cards) {
 				return cards.sort((a, b) => {
-					let num = ['3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A', '2']
+					let num = ['3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A', '2','small','big']
 					let x = num.findIndex(n => n === a.cardvalue)
 					let y = num.findIndex(n => n === b.cardvalue)
 					if (x < y) {
@@ -411,22 +367,21 @@
 			},
 			// 出牌
 			showcard() {
-				this.chooseArray=[];
+				this.chooseArray = [];
 				var newarry = this.play3paper;
 				var reloadarry = []
 				for (var index in this.play3paper) {
 					if (this.play3paper[index].checked) {
-						this.chooseArray.push(this.play3paper[index])
+						this.chooseArray.push(this.play3paper[index]);
 					} else {
 						reloadarry.push(this.play3paper[index])
 					}
 				}
+				
 				this.play3paper = reloadarry
 			},
-			// 出牌规则
-			cardRule() {
-
-			}
+			
+			
 		},
 		onLaunch: function() {
 			// 锁定横屏
@@ -475,10 +430,13 @@
 	}
 
 	.mybox .card {
-		width: 80rpx;
+		width: 70rpx;
 		height: 126rpx;
 	}
-
+	.cardshowlist{
+		width:55%;
+		margin:0 auto
+	}
 	.cardnormal .card {
 		float: left;
 	}
@@ -489,7 +447,7 @@
 	}
 
 	.mybox .big-num {
-		font-size: 30rpx;
+		font-size: 24rpx;
 		font-weight: bold;
 	}
 
@@ -590,7 +548,9 @@
 		position: absolute;
 		bottom: 10rpx;
 		left: 50%;
-		transform: translateX(-50%)
+		transform: translateX(-50%);
+		width:80%;
+		
 	}
 
 	.play2 {
@@ -620,11 +580,11 @@
 	}
 
 	.play2 .listrans {
-		margin-left: 40rpx
+		margin-left: 55rpx
 	}
 
 	.play4 .listrans {
-		margin-right: 40rpx
+		margin-right: 55rpx
 	}
 
 	.list-enter-active,
@@ -728,6 +688,8 @@
 
 	.paperOperate {
 		margin-bottom: 10rpx;
+		width:30%;
+		margin:0 auto
 	}
 
 	.nopaper,
@@ -744,7 +706,13 @@
 		margin-right: 10rpx
 	}
 
-	.cardlist {
+	.mycarlist {
 		height: 180rpx
 	}
+	.cardohter{
+		padding:0;
+		background: transparent;
+		border:0
+	}
+	
 </style>
