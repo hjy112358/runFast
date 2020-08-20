@@ -15,7 +15,7 @@ function judgeCards(objArr) {
 	objArr.forEach((item) => {
 		cards.push(parseInt(item.card))
 	})
-	
+
 
 
 	// 按牌的数量分别判断
@@ -132,7 +132,7 @@ function isPairs(arr) {
 
 // 2.判断是否是三不带(三张相同的牌)
 function isThree(arr) {
-	return arr.length == 3 && (arr[0] === arr[1]) === arr[2];
+	return arr.length == 3 && arr[0] === arr[1] && arr[1] === arr[2];
 }
 
 // 3.判断是否是三带一
