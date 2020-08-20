@@ -1,27 +1,29 @@
 // judgeCards -- 判断牌型的方法
 /**
- * 传入一组牌，如果判断结果为错误牌型则返回null，牌型正确返回一个对象，对象有三个属性
+ * 传入一组牌，如果判断结果为错误牌型则返回status:false，牌型正确返回一个对象，对象有三个属性
  * @param  {list} cards - 要判断的牌
- * @return {object null} -Ò
+ * @return {object} -返回牌型结果
+ *    status: 牌型是否正确
  *    cardKind：牌型；
  *    val：牌型大小，顺子连对之类都是以最大牌为牌型大小，三带一之类都是以三根的牌大小为牌型大小；
  *    size：记录这组牌的长度
  */
-function judgeCards(objArr) {
-	let res = null; //默认结果是null，错误牌型
+function judgeCard(objArr) {
+	let res = {
+		status: false
+	}; //默认结果是status:false，错误牌型
 	let len = objArr.length;
 	let cards = []; //根据出的牌的信息，获取牌面数字数组
 
 	objArr.forEach((item) => {
-		cards.push(parseInt(item.card))
-	})
-
-
+		cards.push(parseInt(item.card));
+	});
 
 	// 按牌的数量分别判断
 	switch (len) {
 		case 1:
 			res = {
+				status: true,
 				cardKind: "ONE",
 				val: cards[0],
 				size: len,
@@ -30,90 +32,108 @@ function judgeCards(objArr) {
 		case 2:
 			if (isPairs(cards)) {
 				res = {
+					status: true,
 					cardKind: "TWO",
 					val: cards[0],
 					size: len,
 				};
 			} else if (isKingBomb(cards)) {
 				res = {
+					status: true,
 					cardKind: "KINGBOMB",
 					val: getMaxVal(cards, 1),
 					size: len,
 				};
 			} else {
-				res = null;
+				res = {
+					status: false
+				};
 			}
 			break;
 		case 3:
 			res = isThree(cards) ? {
-					cardKind: "THREE",
-					val: cards[0],
-					size: len,
-				} :
-				null;
+				status: true,
+				cardKind: "THREE",
+				val: cards[0],
+				size: len,
+			} : {
+				status: false
+			};
 			break;
 		case 4:
 			if (isThreeWithOne(cards)) {
 				res = {
+					status: true,
 					cardKind: "THREE_ONE",
 					val: getMaxVal(cards, 3),
 					size: len,
 				};
 			} else if (isBomb(cards)) {
 				res = {
+					status: true,
 					cardKind: "BOMB",
 					val: cards[0],
 					size: len,
 				};
 			} else {
-				res = null;
+				res = {
+					status: false
+				};
 			}
 			break;
 		default:
 			if (isThreeWithTwo(cards)) {
 				res = {
+					status: true,
 					cardKind: "THREE_TWO",
 					val: getMaxVal(cards, 3),
 					size: len,
 				};
 			} else if (isProgression(cards)) {
 				res = {
+					status: true,
 					cardKind: "PROGRESSION",
 					val: getMaxVal(cards, 1),
 					size: len,
 				};
 			} else if (isProgressionPairs(cards)) {
 				res = {
+					status: true,
 					cardKind: "PROGRESSION_PAIRS",
 					val: getMaxVal(cards, 2),
 					size: len,
 				};
 			} else if (isPlane(cards)) {
 				res = {
+					status: true,
 					cardKind: "PLANE",
 					val: getMaxVal(cards, 3),
 					size: len,
 				};
 			} else if (isPlaneWithOne(cards)) {
 				res = {
+					status: true,
 					cardKind: "PLANE_ONE",
 					val: getMaxVal(cards, 3),
 					size: len,
 				};
 			} else if (isPlaneWithTwo(cards)) {
 				res = {
+					status: true,
 					cardKind: "PLANE_TWO",
 					val: getMaxVal(cards, 3),
 					size: len,
 				};
 			} else if (isFourWithTwo(cards)) {
 				res = {
+					status: true,
 					cardKind: "FOUR_TWO",
 					val: getMaxVal(cards, 4),
 					size: len,
 				};
 			} else if (isFourWithPairs(cards)) {
 				res = {
+					status: true,
 					cardKind: "FOUR_PAIRS",
 					val: getMaxVal(cards, 4),
 					size: len,
