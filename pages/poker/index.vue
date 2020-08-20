@@ -21,6 +21,7 @@
 			<view class="listrans">
 				<view class="cardlist clearfix">
 					<view class="card big card big-card" v-for='(item,index) in play2paper' :key="index" :style="cardtop(play2paper)">
+						<view class="nocheck"></view>
 						<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
 						<view class="carimg">
 							<image :src="cardimg(item)" mode="" class="card-type"></image>
@@ -31,16 +32,6 @@
 			</view>
 		</view>
 		<view class="play3 palybox mybox">
-			<!-- 出牌展示区 -->
-			<view class="cardlist clearfix cardnormal">
-				<view class="card big cardwrap big-card" v-for='(item,index) in chooseArray' :key="index" :style="mycardleft(play3paper,item)">
-					<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
-					<view class="carimg">
-						<image :src="cardimg(item)" mode="" class="card-type"></image>
-						<view class="card-num-right big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
-					</view>
-				</view>
-			</view>
 			<view class="paperOperate clearfix" v-show='sendBtn'>
 				<view class="nopaper" @tap='sendNo()'>
 					<text>不出</text>
@@ -50,8 +41,9 @@
 				</view>
 			</view>
 			<view class="cardlist clearfix cardnormal">
-				<view class="card big cardwrap big-card" v-for='(item,index) in play3paper' :key="index" :style="mycardleft(play3paper,item)"
-				 @tap='checkCard(item,index)'>
+				<view class="card big card big-card" v-for='(item,index) in play3paper' :key="index" :style="mycardleft(play3paper,item)"
+				 @mousemove="mousemove(item)" @mouseup="mouseup(item)" @mousedown="mousedown(item)">
+					<view class="nocheck"></view>
 					<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
 					<view class="carimg">
 						<image :src="cardimg(item)" mode="" class="card-type"></image>
@@ -68,6 +60,7 @@
 			<view class="listrans">
 				<view class="cardlist clearfix">
 					<view class="card big card big-card" v-for='(item,index) in play4paper' :key="index" :style="cardtop(play4paper)">
+						<view class="nocheck"></view>
 						<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
 						<view class="carimg">
 							<image :src="cardimg(item)" mode="" class="card-type"></image>
@@ -81,11 +74,7 @@
 			<view class="paperbox">
 				<image src="/static/paper.png" class="paper"></image>
 			</view>
-<<<<<<< HEAD
 		<!-- 	<transition name="bounce" v-if="show">
-=======
-			<!-- <transition name="bounce" v-if="show">
->>>>>>> devh
 				<image src="/static/paper.png" class="papermove"></image>
 			</transition> -->
 			<transition name="bounce1" v-if="show1">
@@ -122,15 +111,10 @@
 				show3: false,
 				audio: {},
 				mp3: '/static/f.mp3',
-				// moveChange: false,
-				// first: false,
+				moveChange: false,
+				first: false,
 				showpaper: true,
 				sendBtn: false,
-<<<<<<< HEAD
-=======
-				chooseArray: [],
-				pushcard: []
->>>>>>> devh
 			}
 		},
 		components: {
@@ -139,11 +123,12 @@
 		},
 		created() {
 			window.addEventListener('resize', this.handleResize)
+			console.log(this.judgeCards(this.cardArr))
 		},
 		methods: {
 			sendpaper() {
 				// 生成指定发牌张数
-				var sendcard = this.dealPoker(54);
+				var sendcard = this.dealPoker(52);
 				var cardOdd = []
 				var cardEven = []
 				// 随机拆分成四组，依次分发给玩家
@@ -161,7 +146,6 @@
 						this.play3.push(cardEven[j])
 					}
 				}
-				
 				for (var k = 0; k < cardOdd.length; k++) {
 					if (k % 2 == 0) {
 						this.play2.push(cardOdd[k])
@@ -169,57 +153,35 @@
 						this.play4.push(cardOdd[k])
 					}
 				}
-				// this.sendplay()
-				this.sendTwo();
+				this.sendplay()
 			},
 			generatePoker() {
 				// 生成扑克牌
-				// 牌的顺序
-				// 3,4,5,6,7,8,9,10, J , Q , K , A , 2 ,小王,大王
-				// 3,4,5,6,7,8,9,10, 11, 12, 13, 14, 15, 16 ,17
 				// 第一步:定义四个花色
 				var cardType = ['ht', 'hx', 'mh', 'fk']; //'黑桃、红心、梅花、方块'
 				// 第二步:定义13张普通牌
 				var cardValue = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 				// 第三步:定义2张特殊牌，大王与小王
-				var specialCard = [{type: 'small',cardvalue: 'JOKER',checked: false,card:16},
-				{type: 'big',cardvalue: 'JOKER',checked: false,card:17}]
+				// var specialCard = ['big', 'small'];
 				// 第四步:根据上述数组生成54张牌
 				var allCards = [];
-				
 				for (var i = 0, len1 = cardType.length; i < len1; i++) {
 					for (var j = 0, len2 = cardValue.length; j < len2; j++) {
-						var card;
-						if(cardValue[j]=='J'){
-							card=11
-						}else if(cardValue[j]=='Q'){
-							card=12
-						}else if(cardValue[j]=='K'){
-							card=13
-						}else if(cardValue[j]=='A'){
-							card=14
-						}else if(cardValue[j]=='2'){
-							card=15
-						}else{
-							card=cardValue[j]
-						}
 						allCards.push({
 							type: cardType[i],
 							cardvalue: cardValue[j],
-							checked: false,
-							card:card
+							checked: false
 						});
 					}
 				}
-			
-				allCards = allCards.concat(specialCard);
+				// allCards = allCards.concat(specialCard);
 				return allCards;
 			},
 			// 发牌
 			dealPoker(num) {
-				// if (!num || num > 54 || typeof(num) !== 'number') {
-				// 	throw '错误，传入的数字非法，只能是[1-54]';
-				// }
+				if (!num || num > 54 || typeof(num) !== 'number') {
+					throw '错误，传入的数字非法，只能是[1-54]';
+				}
 				// 生成扑克牌
 				var allCards = this.generatePoker();
 				// 洗牌
@@ -244,9 +206,9 @@
 			// 根据花色显示相应颜色
 			cardcolor(item) {
 				var color;
-				if (item.type == 'fk' || item.type == 'hx'||item.type == 'big') {
+				if (item.type == 'fk' || item.type == 'hx') {
 					color = '#f00'
-				} else if (item.type == 'mh' || item.type == 'ht'||item.type == 'small' ) {
+				} else if (item.type == 'mh' || item.type == 'ht') {
 					color = '#000'
 				}
 				return {
@@ -264,25 +226,29 @@
 					imgsrc = '../../static/mh.png'
 				} else if (item.type == 'fk') {
 					imgsrc = '../../static/fk.png'
-				}else if (item.type == 'big') {
-					imgsrc = '../../static/big.png'
-				}else if (item.type == 'small') {
-					imgsrc = '../../static/small.png'
 				}
 				return imgsrc
 			},
-			// 改变左边玩家牌的位置
 			cardleft(play) {
 				var len = play.length;
 				var marginL = '-36rpx'
+				// if (parseInt(len / 6) >= 1) {
+				// 	marginL = '-36rpx'
+				// } else {
+				// 	marginL = '-34rpx'
+				// }
 				return {
 					marginLeft: marginL
 				}
 			},
-			// 
 			cardtop(play) {
 				var len = play.length;
 				var marginT = '-74rpx'
+				// if (parseInt(len / 6) >= 1) {
+				// 	marginT = '-74rpx'
+				// } else {
+				// 	marginT = '-64rpx'
+				// }
 				return {
 					marginTop: marginT
 				}
@@ -290,45 +256,23 @@
 			mycardleft(play, item) {
 				var len = play.length;
 				var marginL = '-60rpx';
-				var marginT = '19rpx';
+				var marginT = 0;
+				// if (parseInt(len / 6) >= 1) {
+				// 	marginL = '-60rpx'
+				// }   else {
+				// 	marginL = '-34rpx'
+				// }
 				if (item.checked) {
-					marginT = '0rpx'
+					marginT = '-20rpx'
 				} else {
-					marginT = '19rpx'
+					marginT = '0'
 				}
 				return {
 					marginLeft: marginL,
 					marginTop: marginT
 				}
 			},
-			// sendplay() {
-			// 	var _this = this;
-			// 	//创建音频
-			// 	_this.audio = new Audio();
-			// 	_this.audio.src = _this.mp3;
-			// 	// 播放音频
-			// 	_this.audio.play();
-			// 	console.log(_this.play1)
-			// 	if (_this.play1.length > 0) {
-			// 		_this.show = !_this.show;
-			// 		setTimeout(function() {
-			// 			_this.play1paper.push(_this.play1[0]);
-			// 			_this.sortCard(_this.play1paper)
-			// 			_this.play1 = _this.play1.slice(1)
-			// 			_this.show = !_this.show;
-			// 		}, 100)
-			// 		setTimeout(function() {
-			// 			_this.sendTwo()
-			// 			_this.show1 = !_this.show1;
-			// 		}, 100)
-			// 	} else {
-			// 		_this.showpaper = false;
-			// 		_this.sendBtn = true
-			// 		return false;
-			// 	}
-			// },
-			sendTwo() {
-				var _this = this;
+			sendplay() {
 				var _this = this;
 				//创建音频
 				_this.audio = new Audio();
@@ -344,17 +288,8 @@
 						_this.show1 = !_this.show1;
 					}, 100)
 					setTimeout(function() {
-<<<<<<< HEAD
 						_this.sendThree()
 						_this.show2 = !_this.show2;
-=======
-						_this.play2paper.push(_this.play2[0]);
-						_this.sortCard(_this.play2paper)
-						_this.play2 = _this.play2.slice(1);
-						// 发牌结束 关闭音频
-						_this.show2 = !_this.show2;
-						_this.sendThree()
->>>>>>> devh
 					}, 100)
 				} else {
 					_this.showpaper = false;
@@ -400,8 +335,15 @@
 						_this.sortCard(_this.play3paper)
 						_this.play3 = _this.play3.slice(1);
 						// 发牌结束 关闭音频
+						// if (_this.play3.length > 0) {
 						_this.show3 = !_this.show3;;
 						_this.sendFour()
+						// } else {
+						// 	_this.showpaper = false;
+						// 	_this.sendBtn=true
+						// 	_this.audio.pause();
+						// }
+
 					}, 200)
 				} else {
 					_this.showpaper = false;
@@ -421,7 +363,7 @@
 						_this.play4 = _this.play4.slice(1);
 						// 发牌结束 关闭音频
 						if (_this.play4.length > 0) {
-							_this.sendTwo();
+							_this.sendplay();
 						} else {
 							_this.showpaper = false;
 							_this.sendBtn = true
@@ -431,6 +373,7 @@
 				} else {
 					_this.showpaper = false;
 					_this.sendBtn = true
+					console.log(_this.showpaper)
 					return false
 				}
 			},
@@ -448,27 +391,355 @@
 					}
 				})
 			},
-			checkCard(item, index) {
-				// 选择牌
-				this.play3paper[index].checked = !this.play3paper[index].checked;
+			mousedown(item) {
+				console.log('mousedown')
+				console.log(item.type + item.cardvalue)
+				this.moveChange = true
+				// this.first = !event.checked
+			},
+			mousemove(item) {
+				if (this.moveChange) {
+					console.log('mousemove', event)
+					item.checked = !item.checked
+				}
+			},
+			mouseup(item) {
+				console.log('mouseup')
+				// this.moveChange = false
 			},
 			// 出牌
 			showcard() {
-				this.chooseArray=[];
-				var newarry = this.play3paper;
-				var reloadarry = []
-				for (var index in this.play3paper) {
-					if (this.play3paper[index].checked) {
-						this.chooseArray.push(this.play3paper[index])
-					} else {
-						reloadarry.push(this.play3paper[index])
-					}
-				}
-				this.play3paper = reloadarry
+
 			},
 			// 出牌规则
 			cardRule() {
+				//以下为出牌规则
+				var rules = {
+					_rules: [
+						new danzRule(),
+						new duiRule(),
+						new sandRule(),
+						new zandRule(),
+						new shunzRule(),
+						new liandRule()
+					],
+					valids: function(_pukes, _curPukes) {
+						for (var i = 0; i < this._rules.length; i++) {
+							if (this._rules[i].valid(_pukes, _curPukes)) {
+								return true;
+							}
+						}
+						return false;
+					}
+				};
 
+				function danzRule() {
+					//单张规则
+				}
+				danzRule.prototype.valid = function(_pukes, _curPukes) {
+					//校验
+					var pukes = _pukes; //玩家的牌
+					var curPukes = _curPukes; //左面的牌
+					if (pukes && pukes.length == 1) {
+						//比较牌面值
+						if (!curPukes || !curPukes.length) {
+							return true;
+						}
+						if (curPukes[0].dians == 2 && pukes[0].dians < 15) {
+							//2特殊处理
+							return false;
+						}
+						if (pukes[0].dians == 2 && curPukes[0].dians < 15) {
+							//2特殊处理
+							return true;
+						}
+						return pukes[0].dians > curPukes[0].dians;
+					}
+					return false;
+				}
+
+				function duiRule(_pukes, _curPukes) {
+					//两张规则
+				}
+				duiRule.prototype.valid = function(_pukes, _curPukes) {
+					//校验
+					var pukes = _pukes; //玩家的牌
+					var curPukes = _curPukes; //左面的牌
+					if (pukes && pukes.length == 2) {
+						//比较牌面值
+						if (pukes[0].dians > 14 && pukes[1].dians > 14) {
+							return true;
+						}
+						if (pukes[0].dians != pukes[1].dians) {
+							return false;
+						}
+						if (!curPukes || !curPukes.length) {
+							return true;
+						} else {
+							if (curPukes.length != 2) {
+								return false;
+							}
+							if (curPukes[0].dians > 14 && curPukes[1].dians > 14) {
+								return false;
+							}
+							if (curPukes[0].dians != curPukes[1].dians) {
+								return false;
+							}
+							if (curPukes[0].dians == 2) {
+								return false;
+							}
+						}
+						if (pukes[0].dians == 2) {
+							return true;
+						}
+						return pukes[0].dians > curPukes[0].dians;
+					}
+					return false;
+				}
+
+				function sandRule() {
+					//三带
+				}
+				sandRule.prototype.valid = function(_pukes, _curPukes) {
+					//校验
+					var pukes = _pukes; //玩家的牌
+					var curPukes = _curPukes; //左面的牌
+					if (pukes && (pukes.length >= 3)) {
+						//比较牌面值
+						var books = getBooks(pukes);
+						if (!valid(books)) return false;
+						if (!curPukes || !curPukes.length) return true;
+						if (curPukes.length != books.length) return false;
+						var books2 = getBooks(curPukes);
+						if (!valid(books2)) return false;
+						return getSum(books) > getSum(books2);
+					}
+					return false;
+
+					function getSum(books) {
+						var sum = 0;
+						for (var i = 0; i < books.length; i++) {
+							if (books[i] == 3) {
+								if (i == 2) return 9999;
+								sum += i;
+							}
+						}
+						return sum;
+					}
+
+					function valid(books) {
+						//验证三带是否有效
+						var counts3 = 0,
+							countsd = 0,
+							d2 = true,
+							start = false,
+							startIndex = -1;
+
+						for (var i = 0; i < books.length; i++) {
+							if (start && books[i] == 3 && startIndex != (i - 1)) {
+								return false;
+							} else {
+								startIndex = i;
+							}
+							if (books[i] == 3) {
+								if (!start) {
+									start = true;
+									startIndex = i;
+								}
+								counts3++;
+							}
+							if (books[i] == 1) {
+								d2 = false;
+							}
+						}
+
+						for (var i = 0; i < books.length; i++) {
+							if (d2 && books[i] == 2) {
+								countsd++;
+							} else if (!d2 && books[i] == 1) {
+								countsd++;
+							}
+						}
+						return counts3 > 0 && counts3 == countsd;
+					}
+
+					function getBooks(pukes) {
+						//返回三带的每个点数的个数
+						var books = [];
+						for (var i = 0; i < pukes.length; i++) {
+							if (!books[pukes[i].dians]) {
+								books[pukes[i].dians] = 1;
+							} else {
+								books[pukes[i].dians]++;
+							}
+						}
+						return books;
+					}
+				}
+
+
+				function zandRule() {
+					//炸弹
+				}
+				zandRule.prototype.valid = function(_pukes, _curPukes) {
+					var pukes = _pukes; //玩家的牌
+					var curPukes = _curPukes; //左面的牌
+					if (pukes && pukes.length == 4) {
+						if (!allEqual(pukes)) {
+							return false;
+						}
+						if (!curPukes || (curPukes.length > 0 && curPukes.length != 4) || !allEqual(curPukes)) {
+							return true;
+						} else {
+							if (pukes[0].dians == 2) {
+								return true;
+							}
+							if (curPukes[0].dians == 2) {
+								return false;
+							}
+							return pukes[0].dians > curPukes[0].dians;
+						}
+
+					}
+					return false;
+
+					function allEqual(pukes) {
+						if (!pukes || !pukes.length) return false;
+						var base = pukes[0].dians;
+						for (var i = 1; i < pukes.length; i++) {
+							if (base != pukes[i].dians) {
+								return false;
+							}
+						}
+						return true;
+					}
+
+				}
+
+				function liandRule() {
+					//连对
+				}
+				liandRule.prototype.valid = function(_pukes, _curPukes) {
+					var pukes = _pukes; //玩家的牌
+					var curPukes = _curPukes; //左面的牌
+					if (pukes && pukes.length >= 6) {
+						if (!verificationCoherence(pukes)) {
+							return false;
+						}
+						if (!curPukes || curPukes.length <= 0) {
+							return true;
+						}
+						if (!verificationCoherence(curPukes)) {
+							return false;
+						}
+						if (pukes.length != curPukes.length) {
+							return false;
+						}
+						return getSumDians(pukes) > getSumDians(curPukes);
+					}
+					return false;
+
+					function getSumDians(pukes) {
+						var sum = 0;
+						for (var i = 0; i < pukes.length; i++) {
+							sum += pukes[i].dians;
+						}
+						return sum;
+					}
+
+					function verificationCoherence(pukes) {
+						//验证连贯性
+						if (!pukes || !pukes.length) return false;
+						var books = [];
+						for (var i = 0; i < pukes.length; i++) {
+							if (pukes[i].dians == 2 || pukes[i].dians > 14) {
+								return false;
+							}
+							if (!books[pukes[i].dians]) {
+								books[pukes[i].dians] = 1;
+							} else {
+								books[pukes[i].dians]++;
+							}
+							if (books[pukes[i].dians] > 2) {
+								return false;
+							}
+						}
+						var start = false;
+
+						for (var i = 0; i < books.length; i++) {
+							if (books[i] && books[i] != 2) {
+								return false;
+							}
+							if (books[i] == 2 && !start) {
+								start = true;
+							}
+							if (start && books[i] != 2) {
+								return false;
+							}
+						}
+
+						return true;
+					}
+				}
+
+				function shunzRule() {
+					//顺子
+				}
+				shunzRule.prototype.valid = function(_pukes, _curPukes) {
+					var pukes = _pukes; //玩家的牌
+					var curPukes = _curPukes; //左面的牌
+					if (pukes && pukes.length >= 5) {
+						if (!verificationCoherence(pukes)) {
+							return false;
+						}
+						if (!curPukes || curPukes.length <= 0) {
+							return true;
+						}
+						if (!verificationCoherence(curPukes)) {
+							return false;
+						}
+						if (pukes.length != curPukes.length) {
+							return false;
+						}
+						return getSumDians(pukes) > getSumDians(curPukes);
+					}
+					return false;
+
+					function getSumDians(pukes) {
+						var sum = 0;
+						for (var i = 0; i < pukes.length; i++) {
+							sum += pukes[i].dians;
+						}
+						return sum;
+					}
+
+					function verificationCoherence(pukes) {
+						//验证连贯性
+						if (!pukes || !pukes.length) return false;
+						var books = [];
+						for (var i = 0; i < pukes.length; i++) {
+							if (pukes[i].dians == 2 || pukes[i].dians > 14) {
+								return false;
+							}
+							if (!books[pukes[i].dians]) {
+								books[pukes[i].dians] = 1;
+							} else {
+								return false;
+							}
+						}
+						var start = false;
+						for (var i = 0; i < books.length; i++) {
+							if (books[i] == 1 && !start) {
+								start = true;
+							}
+							if (start && !books[i]) {
+								return false;
+							}
+						}
+						return true;
+					}
+
+				}
 			}
 		},
 		onLaunch: function() {
@@ -770,7 +1041,7 @@
 	}
 
 	.paperOperate {
-		margin-bottom: 10rpx;
+		margin-bottom: 45rpx;
 	}
 
 	.nopaper,
@@ -785,9 +1056,5 @@
 
 	.nopaper {
 		margin-right: 10rpx
-	}
-
-	.cardlist {
-		height: 180rpx
 	}
 </style>

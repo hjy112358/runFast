@@ -13,10 +13,9 @@ function judgeCards(objArr) {
 	let cards = []; //根据出的牌的信息，获取牌面数字数组
 
 	objArr.forEach((item) => {
-		cards.push(item.card)
+		cards.push(parseInt(item.card))
 	})
 	
-	console.log(cards)
 
 
 	// 按牌的数量分别判断
