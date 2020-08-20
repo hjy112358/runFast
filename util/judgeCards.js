@@ -109,13 +109,13 @@ function judgeCards(objArr) {
 				};
 			} else if (isFourWithTwo(cards)) {
 				res = {
-					cardKind: "Four_TWO",
+					cardKind: "FOUR_TWO",
 					val: getMaxVal(cards, 4),
 					size: len,
 				};
 			} else if (isFourWithPairs(cards)) {
 				res = {
-					cardKind: "Four_PAIRS",
+					cardKind: "FOUR_PAIRS",
 					val: getMaxVal(cards, 4),
 					size: len,
 				};
