@@ -114,7 +114,7 @@
 				moveChange: false,
 				first: false,
 				showpaper: true,
-				sendBtn: false
+				sendBtn: false,
 			}
 		},
 		components: {
