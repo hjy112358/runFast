@@ -9,7 +9,7 @@
  */
 function judgeCards(objArr) {
 	let res = null; //默认结果是null，错误牌型
-	let len = cards.length;
+	let len = objArr.length;
 	let cards = []; //根据出的牌的信息，获取牌面数字数组
 
 	objArr.forEach((item) => {
