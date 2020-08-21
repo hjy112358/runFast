@@ -8,7 +8,7 @@
  *    val：牌型大小，顺子连对之类都是以最大牌为牌型大小，三带一之类都是以三根的牌大小为牌型大小；
  *    size：记录这组牌的长度
  */
-function judgeCard(objArr) {
+function judgeCards(objArr) {
 	let res = {
 		status: false
 	}; //默认结果是status:false，错误牌型
