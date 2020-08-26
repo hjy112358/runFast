@@ -39,7 +39,7 @@
 			</view>
 			<view class="cardlist clearfix cardnormal mycarlist">
 				<view class="card big cardwrap big-card" v-for='(item,index) in play3paper' :key="index" :style="mycardleft(play3paper,item,index)"
-				 @tap='checkCard(item,index)' >
+				 @tap='checkCard(item,index)'>
 					<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cartext}}</view>
 					<view class="carimg">
 						<image :src="cardimg(item)" mode="" class="card-type"></image>
@@ -81,6 +81,9 @@
 			</transition>
 			<text class="send" @tap="sendpaper()">发牌</text>
 		</view>
+		<view class="hintButton">
+			<button type="default" style="margin-top: 60px;" @click="hintCards(previousCards,leftCards)">提示按钮</button>
+		</view>
 	</view>
 </template>
 
@@ -104,7 +107,44 @@
 				showpaper: true,
 				sendBtn: false,
 				chooseArray: [],
-				pushcard: []
+				pushcard: [],
+				leftCards: [
+					{card:'3',type:'mh',isHint:true},
+					{card:'3',type:'mh',isHint:true},
+					{card:'3',type:'mh',isHint:true},
+					{card:'3',type:'mh',isHint:true},
+					{card:'5',type:'mh',isHint:true},
+					{card:'5',type:'mh',isHint:true},
+					{card:'5',type:'mh',isHint:true},
+					{card:'6',type:'mh',isHint:true},
+					{card:'6',type:'mh',isHint:true},
+					{card:'6',type:'mh',isHint:true},
+					{card:'11',type:'mh',isHint:true},
+					{card:'11',type:'mh',isHint:true},
+					{card:'11',type:'mh',isHint:true},
+					{card:'11',type:'mh',isHint:true},
+					{card:'12',type:'mh',isHint:true},
+					{card:'14',type:'mh',isHint:true},
+					{card:'13',type:'mh',isHint:true},
+					{card:'13',type:'mh',isHint:true},
+					{card:'13',type:'mh',isHint:true},
+					{card:'16',type:'mh',isHint:true},
+					{card:'17',type:'mh',isHint:true},
+				], //--手中剩余的牌  isHint
+				previousCards:[
+					{card:'6',type:'ht'},
+					{card:'6',type:'ht'},
+					{card:'6',type:'ht'},
+					{card:'4',type:'ht'},
+					{card:'4',type:'ht'},
+					{card:'4',type:'ht'},
+					{card:'5',type:'ht'},
+					{card:'5',type:'ht'},
+					{card:'5',type:'ht'},
+					{card:'6',type:'ht'},
+					{card:'7',type:'ht'},
+					{card:'8',type:'ht'},
+				],//---上家出的牌
 			}
 		},
 		components: {
@@ -113,6 +153,11 @@
 		},
 		created() {
 			window.addEventListener('resize', this.handleResize)
+
+			// 需要删除
+			// this.analyzeCards(this.leftCards)
+			// this.hintCards(this.previousCards,this.leftCards)
+			
 		},
 		methods: {
 			sendpaper() {
@@ -131,9 +176,9 @@
 						}
 					});
 				});
-				this.play2=Arr[0]
-				this.play3=Arr[1]
-				this.play4=Arr[2]
+				this.play2 = Arr[0]
+				this.play3 = Arr[1]
+				this.play4 = Arr[2]
 				this.sendTwo();
 				// this.handOut(Arr,PersonNum)
 			},
@@ -150,14 +195,14 @@
 				var specialCard = [{
 						type: 'small',
 						cardvalue: 'small',
-						cartext:'JOKER',
+						cartext: 'JOKER',
 						checked: false,
 						card: 16
 					},
 					{
 						type: 'big',
 						cardvalue: 'big',
-						cartext:'JOKER',
+						cartext: 'JOKER',
 						checked: false,
 						card: 17
 					}
@@ -186,7 +231,7 @@
 							cardvalue: cardValue[j],
 							checked: false,
 							card: card,
-							cartext:cardValue[j]
+							cartext: cardValue[j]
 						});
 					}
 				}
@@ -259,7 +304,7 @@
 				}
 			},
 			// 改变当前自己牌的堆叠位置
-			mycardleft(play, item,index) {
+			mycardleft(play, item, index) {
 				var marginL = '-50rpx';
 				var marginT = '19rpx';
 				if (item.checked) {
@@ -267,7 +312,7 @@
 				} else {
 					marginT = '19rpx'
 				}
-				if(index==0){
+				if (index == 0) {
 					marginL = '0';
 				}
 				return {
@@ -349,7 +394,7 @@
 			// 牌的排序
 			sortCard(cards) {
 				return cards.sort((a, b) => {
-					let num = ['3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A', '2','small','big']
+					let num = ['3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A', '2', 'small', 'big']
 					let x = num.findIndex(n => n === a.cardvalue)
 					let y = num.findIndex(n => n === b.cardvalue)
 					if (x < y) {
@@ -380,8 +425,8 @@
 				console.log(this.chooseArray)
 				this.play3paper = reloadarry
 			},
-			  
-			
+
+
 		},
 		onLaunch: function() {
 			// 锁定横屏
@@ -433,10 +478,12 @@
 		width: 70rpx;
 		height: 126rpx;
 	}
-	.cardshowlist{
-		width:55%;
-		margin:0 auto
+
+	.cardshowlist {
+		width: 55%;
+		margin: 0 auto
 	}
+
 	.cardnormal .card {
 		float: left;
 	}
@@ -549,8 +596,8 @@
 		bottom: 10rpx;
 		left: 50%;
 		transform: translateX(-50%);
-		width:80%;
-		
+		width: 80%;
+
 	}
 
 	.play2 {
@@ -688,8 +735,8 @@
 
 	.paperOperate {
 		margin-bottom: 10rpx;
-		width:30%;
-		margin:0 auto
+		width: 30%;
+		margin: 0 auto
 	}
 
 	.nopaper,
@@ -709,10 +756,10 @@
 	.mycarlist {
 		height: 180rpx
 	}
-	.cardohter{
-		padding:0;
+
+	.cardohter {
+		padding: 0;
 		background: transparent;
-		border:0
+		border: 0
 	}
-	
 </style>
