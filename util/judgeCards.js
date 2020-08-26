@@ -1,3 +1,11 @@
+import analyzeCards from './analyzeCards';
+import {
+	valCount,
+	getMaxVal,
+	sortCard
+} from './util.js'
+
+
 // judgeCards -- 判断牌型的方法
 /**
  * 传入一组牌，如果判断结果为错误牌型则返回status:false，牌型正确返回一个对象，对象有三个属性
@@ -9,15 +17,24 @@
  *    size：记录这组牌的长度
  */
 function judgeCards(objArr) {
+
 	let res = {
 		status: false
 	}; //默认结果是status:false，错误牌型
 	let len = objArr.length;
 	let cards = []; //根据出的牌的信息，获取牌面数字数组
 
+
 	objArr.forEach((item) => {
-		cards.push(parseInt(item.card));
+		if (item.card) {
+			// 所给的每张牌的信息是对象
+			cards.push(parseInt(item.card));
+		} else {
+			// 所给的每张牌的信息是数字或者字符串
+			cards.push(parseInt(item))
+		}
 	});
+
 
 	// 按牌的数量分别判断
 	switch (len) {
@@ -33,7 +50,7 @@ function judgeCards(objArr) {
 			if (isPairs(cards)) {
 				res = {
 					status: true,
-					cardKind: "TWO",
+					cardKind: "PAIRS",
 					val: cards[0],
 					size: len,
 				};
@@ -110,17 +127,17 @@ function judgeCards(objArr) {
 					val: getMaxVal(cards, 3),
 					size: len,
 				};
-			} else if (isPlaneWithOne(cards)) {
+			} else if (isPlaneWithOne(cards, objArr)) {
 				res = {
 					status: true,
 					cardKind: "PLANE_ONE",
-					val: getMaxVal(cards, 3),
+					val: getMaxVal(analyzeCards(objArr)._plane[0], 3),
 					size: len,
 				};
 			} else if (isPlaneWithTwo(cards)) {
 				res = {
 					status: true,
-					cardKind: "PLANE_TWO",
+					cardKind: "PLANE_PAIRS",
 					val: getMaxVal(cards, 3),
 					size: len,
 				};
@@ -138,10 +155,13 @@ function judgeCards(objArr) {
 					val: getMaxVal(cards, 4),
 					size: len,
 				};
+			} else {
+				res = {
+					status: false
+				}
 			}
 			break;
 	}
-
 	return res;
 }
 
@@ -190,25 +210,25 @@ function isProgression(arr) {
 
 // 6.判断是否是连对
 function isProgressionPairs(arr) {
-	if (arr.length < 6 && arr.length > 24) {
+	if (arr.length < 6 || arr.length > 24) {
 		return false;
-	} else {
-		let vCount = valCount(sortCard(arr));
-		for (let i = 0; i < vCount.length; i++) {
-			if (vCount[i].count != 2) return false;
-			else if (
-				i < vCount.length - 1 &&
-				vCount[i + 1].val - 1 != vCount[i].val
-			)
-				return false;
-		}
-		return true;
 	}
+	let vCount = valCount(sortCard(arr));
+	for (let i = 0; i < vCount.length; i++) {
+		if (vCount[i].count != 2) return false;
+		else if (
+			i < vCount.length - 1 &&
+			vCount[i + 1].val - 1 != vCount[i].val
+		)
+			return false;
+	}
+	return true;
+
 }
 
 // 7.判断是否是飞机
 function isPlane(arr) {
-	if (arr.length < 6 && arr.length > 36) {
+	if (arr.length < 6 || arr.length > 36) {
 		return false;
 	} else {
 		let vCount = valCount(sortCard(arr));
@@ -225,10 +245,28 @@ function isPlane(arr) {
 }
 
 // 8.判断是否是飞机带单
-function isPlaneWithOne(arr) {
-	if (arr.length < 8 || arr.length % 4 != 0) return false;
+function isPlaneWithOne(arr, objArr) {
+	let analCards = analyzeCards(objArr)
+	// 有其他牌型则返回false
+	if (analCards._bomb.length || analCards._kingBomb.length) {
+		return false;
+	}
+	if (analCards._plane.length == 1) {
+		if (analCards._plane[0].length / 3 == analCards._three.length - 1) {
+			// 如果牌数为12，且均为三根，例如：333444555777
+			return true
+		} else {
+			// 没有多一个三根的情况
+			if (analCards._plane[0].length / 3 == analCards._one.length + analCards._pairs.length * 2) {
+				return true
+			}
+		}
+	} else {
+		return false;
+	}
 
-	let c = valCount(sortCard(arr));
+
+	/* let c = valCount(sortCard(arr));
 	let threeList = [];
 	let threeCount = arr.length / 4;
 
@@ -246,7 +284,7 @@ function isPlaneWithOne(arr) {
 	for (let i = 0; i < threeList.length - 1; i++) {
 		if (threeList[i].val + 1 != threeList[i + 1].val) return false;
 	}
-	return true;
+	return true; */
 }
 
 // 9.判断是否是飞机带双
@@ -327,67 +365,6 @@ function isKingBomb(arr) {
 	return arr.length == 2 && arr[0] + arr[1] == 33;
 }
 
-/**
- * 牌统计，统计各个牌有多少张，比如2张A，一张8
- * @param  {list} cards - 要统计的牌
- * @return {object array} val：值，count：数量
- */
-function valCount(cards) {
-	var result = [];
-	for (var i = 0; i < cards.length; i++) {
-		addCount(result, cards[i]);
-	}
 
-	function addCount(result, v) {
-		for (var i = 0; i < result.length; i++) {
-			if (result[i].val == v) {
-				result[i].count++;
-				return;
-			}
-		}
-		result.push({
-			val: v,
-			count: 1
-		});
-	}
-
-	return result;
-}
-
-/**
- * 获取指定张数的最大牌值
- * @param  {list} cards - 牌
- * @param  {list} cards - 张数
- * @return 值
- */
-function getMaxVal(cards, n) {
-	var c = valCount(cards);
-	var max = 0;
-	c.forEach(function(v) {
-		if (v.count === n && v.val > max) {
-			max = v.val;
-		}
-	});
-	return max;
-}
-
-/**
- * 数组从小到大排序
- * @param {array} cards - 牌
- * @return {array} - 排序后的牌面数组
- */
-function sortCard(arr) {
-	let min;
-	for (let i = 0; i < arr.length - 1; i++) {
-		for (let j = i + 1; j < arr.length; j++) {
-			if (arr[i] > arr[j]) {
-				min = arr[j];
-				arr[j] = arr[i];
-				arr[i] = min;
-			}
-		}
-	}
-	return arr;
-}
 
 export default judgeCards
