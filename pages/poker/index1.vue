@@ -1,6 +1,20 @@
 <template>
-	<!-- 出牌效果 -->
 	<view class="content">
+		<view class="landlordCard clearfix">
+			<view class="card big cardohter big-card " v-for='(item,index) in landlordCard' :key="index" v-show='island'>
+				<view class="" v-if="landsure">
+					<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cartext}}</view>
+					<view class="carimg">
+						<image :src="cardimg(item)" mode="" class="card-type"></image>
+						<view class="card-num-right big-num" :style="cardcolor(item)">{{item.cartext}}</view>
+					</view>
+				</view>
+				<view class=""  v-else >
+					<image src="/static/paper.png" class="paper"></image>
+				</view>
+				
+			</view>
+		</view>
 		<view class="play2 palybox">
 			<view class="playtext">
 				<text class="player">左玩家</text>
@@ -8,12 +22,7 @@
 			<view class="listrans">
 				<view class="cardlist clearfix">
 					<view class="card big cardohter big-card " v-for='(item,index) in play2paper' :key="index" :style="cardtop(play2paper)">
-						<!-- <view class="card-num-left big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
-						<view class="carimg">
-							<image :src="cardimg(item)" mode="" class="card-type"></image>
-							<view class="card-num-right big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
-						</view> -->
-						<image src="/static/paper.png" class="paper"></image>
+						 <image src="/static/paper.png" class="paper"></image>
 					</view>
 				</view>
 			</view>
@@ -21,7 +30,7 @@
 		<view class="play3 palybox mybox">
 			<!-- 出牌展示区 -->
 			<view class="cardlist clearfix cardnormal cardshowlist">
-				<view class="card big cardwrap big-card" v-for='(item,index) in chooseArray' :key="index" :style="mycardleft(play3paper,item)">
+				<view class="card big cardwrap big-card" v-for='(item,index) in chooseArray' :key="index" :style="mycardleft(chooseArray,item,index)">
 					<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cartext}}</view>
 					<view class="carimg">
 						<image :src="cardimg(item)" mode="" class="card-type"></image>
@@ -29,12 +38,29 @@
 					</view>
 				</view>
 			</view>
+			<!-- 出牌按钮 -->
 			<view class="paperOperate clearfix" v-show='sendBtn'>
 				<view class="nopaper" @tap='sendNo()'>
 					<text>不出</text>
 				</view>
 				<view class="surePaper" @tap='showcard()'>
 					<text>出牌</text>
+				</view>
+			</view>
+			<!-- 抢地主按钮 -->
+			<view class="grabCardbox clearfix" v-show='timeBtn'>
+				<view class="noGrad fl" @tap='noNeed()'>
+					<text>不抢</text>
+				</view>
+				<!-- 计时器 -->
+				<view class="countDown fl">
+					<view class="">
+						<image src="../../static/time.png" mode=""></image>
+						<text>{{timer}}</text>
+					</view>
+				</view>
+				<view class="grabCard fl" @tap="need()">
+					<text>抢地主</text>
 				</view>
 			</view>
 			<view class="cardlist clearfix cardnormal mycarlist">
@@ -56,11 +82,6 @@
 			<view class="listrans">
 				<view class="cardlist clearfix ">
 					<view class="card big cardohter big-card" v-for='(item,index) in play4paper' :key="index" :style="cardtop(play4paper)">
-						<!-- <view class="card-num-left big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
-						<view class="carimg">
-							<image :src="cardimg(item)" mode="" class="card-type"></image>
-							<view class="card-num-right big-num" :style="cardcolor(item)">{{item.cardvalue}}</view>
-						</view> -->
 						<image src="/static/paper.png" class="paper"></image>
 					</view>
 				</view>
@@ -103,9 +124,14 @@
 				mp3: '/static/f.mp3',
 				showpaper: true,
 				sendBtn: false,
-				chooseArray: [],
-				pushcard: []
-			}
+				chooseArray: [], //选择的牌
+				pushcard: [],
+				timer:5 ,  // 计时器
+				timeBtn:false,
+				landlordCard:[],   //地主牌
+				island:false,   //是否显示地主牌列表
+				landsure:false   //是否抢地主
+			}  
 		},
 		components: {
 			uniList,
@@ -117,7 +143,8 @@
 		methods: {
 			sendpaper() {
 				// 生成指定发牌张数
-				var cardArr = this.dealPoker(54);
+				var cardArr = this.dealPoker(10);
+				console.log()
 				let PersonNum = 3; // 人数
 				let Arr = []; //根据玩家人数生成数组
 				for (let i = 0; i < PersonNum; i++) {
@@ -135,7 +162,6 @@
 				this.play3=Arr[1]
 				this.play4=Arr[2]
 				this.sendTwo();
-				// this.handOut(Arr,PersonNum)
 			},
 			generatePoker() {
 				// 生成扑克牌
@@ -203,7 +229,15 @@
 				var allCards = this.generatePoker();
 				// 洗牌
 				var randomCards = this.shuffle(allCards);
-				return randomCards.slice(0, num);
+				randomCards=randomCards.slice(0, num)
+				for(var i=0;i<3;i++){
+					var index=Math.floor(Math.random()*randomCards.length)
+					var land=randomCards[index];
+					randomCards.splice(index,1);
+					this.landlordCard.push(land);
+				}
+				
+				return randomCards;
 			},
 			// 洗牌
 			shuffle(arr) {
@@ -292,12 +326,14 @@
 						_this.sortCard(_this.play2paper)
 						_this.play2 = _this.play2.slice(1);
 						// 发牌结束 关闭音频
-						_this.show2 = !_this.show2;
-						_this.sendThree()
+						if (_this.play3.length > 0) {
+							_this.show2 = !_this.show2;
+							_this.sendThree()
+						} 
+						_this.isclose()
 					}, 100)
 				} else {
-					_this.showpaper = false;
-					_this.sendBtn = true
+					_this.isclose()
 					return false
 				}
 			},
@@ -312,12 +348,15 @@
 						_this.sortCard(_this.play3paper)
 						_this.play3 = _this.play3.slice(1);
 						// 发牌结束 关闭音频
-						_this.show3 = !_this.show3;;
-						_this.sendFour()
+						if (_this.play4.length > 0) {
+							_this.show3 = !_this.show3;;
+							_this.sendFour()
+						} 
+						_this.isclose()
+						
 					}, 200)
 				} else {
-					_this.showpaper = false;
-					_this.sendBtn = true
+					_this.isclose()
 					return false
 				}
 			},
@@ -332,19 +371,39 @@
 						_this.sortCard(_this.play4paper)
 						_this.play4 = _this.play4.slice(1);
 						// 发牌结束 关闭音频
-						if (_this.play4.length > 0) {
+						if (_this.play2.length > 0) {
 							_this.sendTwo();
-						} else {
-							_this.showpaper = false;
-							_this.sendBtn = true
-							_this.audio.pause();
-						}
+						} 
+						_this.isclose()
 					}, 200)
 				} else {
-					_this.showpaper = false;
-					_this.sendBtn = true
+					_this.isclose()
 					return false
 				}
+			},
+			isclose(){
+				var _this=this
+				if(_this.play2.length ==0&&_this.play3.length==0&&_this.play4.length==0){
+					
+					_this.audio.pause();
+					_this.timeBtn=true;
+					_this.showpaper=false;
+					_this.counDown();
+					_this.island=true
+				}
+			},
+			// 叫地主倒计时
+			counDown(){
+				var _this=this;
+				var time=setInterval(function(){
+					_this.timer--;
+					if(_this.timer == 0){
+						clearInterval(time);
+						_this.timeBtn=false;
+						_this.sendBtn = true;
+					}
+				},1000);
+
 			},
 			// 牌的排序
 			sortCard(cards) {
@@ -377,10 +436,39 @@
 						reloadarry.push(this.play3paper[index])
 					}
 				}
-				console.log(this.chooseArray)
-				this.play3paper = reloadarry
+				var result=this.judgeCards(this.chooseArray)
+				console.log(result)
+				if(result){
+					this.play3paper = reloadarry;
+				}else{
+					this.chooseArray=[];
+					alert("你出的牌不符合规则")
+				}
+				
+				
+				// 对战时
+				// 1.AI监测当前是否有比上家大的牌
+				
+				// 2.选择牌后判断是否满足出牌规则
+				// this.judgeCards(this.chooseArray)
+				// 3.满足出牌规则后，再判断出牌是否大过上家
+				
 			},
-			  
+			// 抢地主
+			need(){
+				for(var i=0;i<this.landlordCard.length;i++){
+					this.play3paper.push(this.landlordCard[i]);
+				}
+				this.sortCard(this.play3paper);
+				this.island=false;
+				this.timeBtn=false;
+				this.landsure=true;
+			},
+			// 不抢地主
+			noNeed(){
+				this.timeBtn=false;
+				this.sendBtn = true;
+			}
 			
 		},
 		onLaunch: function() {
@@ -688,7 +776,7 @@
 
 	.paperOperate {
 		margin-bottom: 10rpx;
-		width:30%;
+		max-width:160rpx;
 		margin:0 auto
 	}
 
@@ -714,5 +802,70 @@
 		background: transparent;
 		border:0
 	}
+	.cardshowlist{
+		position: absolute;
+		top: -69%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: auto;
+	}
+	.fl{
+		float:left
+	}
+	.grabCardbox{
+		display: inline-block;
+	}
+	.noGrad,
+	.grabCard{
+		width: 90rpx;
+		height: 40rpx;
+		background: #64b923;
+		border-radius: 40rpx;
+		color: #fff;
+		font-size: 18rpx;
+		line-height: 40rpx;
+		font-weight: 530;
+	}
+	.grabCard{
+		background:#f59104;
+	}
+	.countDown text{
+		font-size: 20rpx;
+		color:#FF5A5F;
+		position:absolute;
+		top:50%;
+		left:50%;
+		transform:translate(-50%,-50%);
+		margin-top:1rpx
+	}
+	.countDown{
+		width:50rpx;
+		height:50rpx;
+		position:relative;
+		margin:0 20rpx;
+		margin-top:-15rpx;
+		
+	}
+	.countDown image{
+		width:50rpx;
+		height:50rpx;
+	}
 	
+	/* 地主牌展示 */
+	.landlordCard .card{
+		float:left;
+		margin-right:20rpx;
+		border: 1px solid #ccc;
+		border-image: initial;
+		border-color: #ccc;
+		background: #f1f1f1;
+		border-radius: 4px;
+		font-family: monospace;
+		text-align: center;
+		padding:3rpx
+	}
+	.landlordCard{
+		margin-top:20rpx;
+		
+	}
 </style>

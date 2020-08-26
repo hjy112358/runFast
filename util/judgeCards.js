@@ -15,7 +15,7 @@ function judgeCards(objArr) {
 	objArr.forEach((item) => {
 		cards.push(parseInt(item.card))
 	})
-
+	console.log(cards)
 
 
 	// 按牌的数量分别判断
