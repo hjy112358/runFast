@@ -39,20 +39,74 @@
 				</view>
 			</view>
 			<!-- 出牌按钮 -->
-			<view class="paperOperate clearfix" v-show='sendBtn'>
+			<!-- <view class="paperOperate clearfix"  v-show='sendBtn'>
 				<view class="nopaper" @tap='sendNo()'>
 					<text>不出</text>
+				</view>
+				<view class="hit" @tap='hit()'>
+					<text>提示 </text>
 				</view>
 				<view class="surePaper" @tap='showcard()'>
 					<text>出牌</text>
 				</view>
+			</view> -->
+			<!-- 测试 -->
+			<view class="paperOperate clearfix" >
+				<!-- <view class="nopaper">
+					<text>不出</text>
+				</view> -->
+				<view class="hit" @tap='testhit(1)'>
+					<text>单张 </text>
+				</view>
+				<view class="hit" @tap='testhit(2)'>
+					<text>对子 </text>
+				</view>
+				<view class="hit" @tap='testhit(3)'>
+					<text>三张 </text>
+				</view>
+				<view class="hit" @tap='testhit(4)'>
+					<text>三带一 </text>
+				</view>
+				<view class="hit" @tap='testhit(5)'>
+					<text>三带二</text>
+				</view>
+				<view class="hit" @tap='testhit(6)'>
+					<text>四带二 </text>
+				</view>
+				<view class="hit" @tap='testhit(7)'>
+					<text>四带两队 </text>
+				</view>
+				<view class="hit" @tap='testhit(8)'>
+					<text>顺子  </text>
+				</view>
+				<view class="hit" @tap='testhit(9)'>
+					<text>连队  </text>
+				</view>
+				<view class="hit" @tap='testhit(10)'>
+					<text>飞机  </text>
+				</view>
+				<view class="hit" @tap='testhit(11)'>
+					<text>飞机带单   </text>
+				</view>
+				<view class="hit" @tap='testhit(12)'>
+					<text>飞机带双   </text>
+				</view>
+				<view class="hit" @tap='testhit(13)'>
+					<text>炸弹</text>
+				</view>
+				<view class="hit" @tap='testhit(14)'>
+					<text>王炸</text>
+				</view>
+				
+				<!-- <view class="surePaper" @tap='testshowcard()'>
+					<text>出牌</text>
+				</view> -->
 			</view>
 			<!-- 抢地主按钮 -->
-			<view class="grabCardbox clearfix" v-show='timeBtn'>
+			<!-- <view class="grabCardbox clearfix" v-show='timeBtn'>
 				<view class="noGrad fl" @tap='noNeed()'>
 					<text>不抢</text>
 				</view>
-				<!-- 计时器 -->
 				<view class="countDown fl">
 					<view class="">
 						<image src="../../static/time.png" mode=""></image>
