@@ -39,20 +39,74 @@
 				</view>
 			</view>
 			<!-- 出牌按钮 -->
-			<view class="paperOperate clearfix" v-show='sendBtn'>
+			<!-- <view class="paperOperate clearfix"  v-show='sendBtn'>
 				<view class="nopaper" @tap='sendNo()'>
 					<text>不出</text>
+				</view>
+				<view class="hit" @tap='hit()'>
+					<text>提示 </text>
 				</view>
 				<view class="surePaper" @tap='showcard()'>
 					<text>出牌</text>
 				</view>
+			</view> -->
+			<!-- 测试 -->
+			<view class="paperOperate clearfix" >
+				<!-- <view class="nopaper">
+					<text>不出</text>
+				</view> -->
+				<view class="hit" @tap='testhit(1)'>
+					<text>单张 </text>
+				</view>
+				<view class="hit" @tap='testhit(2)'>
+					<text>对子 </text>
+				</view>
+				<view class="hit" @tap='testhit(3)'>
+					<text>三张 </text>
+				</view>
+				<view class="hit" @tap='testhit(4)'>
+					<text>三带一 </text>
+				</view>
+				<view class="hit" @tap='testhit(5)'>
+					<text>三带二</text>
+				</view>
+				<view class="hit" @tap='testhit(6)'>
+					<text>四带二 </text>
+				</view>
+				<view class="hit" @tap='testhit(7)'>
+					<text>四带两队 </text>
+				</view>
+				<view class="hit" @tap='testhit(8)'>
+					<text>顺子  </text>
+				</view>
+				<view class="hit" @tap='testhit(9)'>
+					<text>连队  </text>
+				</view>
+				<view class="hit" @tap='testhit(10)'>
+					<text>飞机  </text>
+				</view>
+				<view class="hit" @tap='testhit(11)'>
+					<text>飞机带单   </text>
+				</view>
+				<view class="hit" @tap='testhit(12)'>
+					<text>飞机带双   </text>
+				</view>
+				<view class="hit" @tap='testhit(13)'>
+					<text>炸弹</text>
+				</view>
+				<view class="hit" @tap='testhit(14)'>
+					<text>王炸</text>
+				</view>
+				
+				<!-- <view class="surePaper" @tap='testshowcard()'>
+					<text>出牌</text>
+				</view> -->
 			</view>
 			<!-- 抢地主按钮 -->
-			<view class="grabCardbox clearfix" v-show='timeBtn'>
+			<!-- <view class="grabCardbox clearfix" v-show='timeBtn'>
 				<view class="noGrad fl" @tap='noNeed()'>
 					<text>不抢</text>
 				</view>
-				<!-- 计时器 -->
 				<view class="countDown fl">
 					<view class="">
 						<image src="../../static/time.png" mode=""></image>
@@ -62,7 +116,7 @@
 				<view class="grabCard fl" @tap="need()">
 					<text>抢地主</text>
 				</view>
-			</view>
+			</view> -->
 			<view class="cardlist clearfix cardnormal mycarlist">
 				<view class="card big cardwrap big-card" v-for='(item,index) in play3paper' :key="index" :style="mycardleft(play3paper,item,index)"
 				 @tap='checkCard(item,index)' >
@@ -87,7 +141,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="paperCenter" v-show='showpaper'>
+		<!-- <view class="paperCenter" v-show='showpaper'>
 			<view class="paperbox">
 				<image src="/static/paper.png" class="paper"></image>
 			</view>
@@ -101,7 +155,7 @@
 				<image src="/static/paper.png" class="papermove"></image>
 			</transition>
 			<text class="send" @tap="sendpaper()">发牌</text>
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -115,7 +169,26 @@
 				play3: [],
 				play4: [],
 				play2paper: [],
-				play3paper: [],
+				play3paper: [
+					{card: 14,cardvalue: "A",cartext: "A",checked: false,isHint: true,type: "fk"},
+					{card: 14,cardvalue: "A",cartext: "A",checked: false,isHint: true,type: "mh"},
+					{card: 14,cardvalue: "A",cartext: "A",checked: false,isHint: true,type: "hx"},
+					{card: 14,cardvalue: "A",cartext: "A",checked: false,isHint: true,type: "fk"},
+					{card: 13,cardvalue: "K",cartext: "K",checked: false,isHint: true,type: "mh"},
+					{card: 13,cardvalue: "K",cartext: "K",checked: false,isHint: true,type: "ht"},
+					{card: 12,cardvalue: "Q",cartext: "Q",checked: false,isHint: true,type: "fk"},
+					{card: 11,cardvalue: "J",cartext: "J",checked: false,isHint: true,type: "fk"},
+					{card: 10,cardvalue: "10",cartext: "10",checked: false,isHint: true,type: "fk"},
+					{card: 9,cardvalue: "9",cartext: "9",checked: false,isHint: true,type: "fk"},
+					{card: 9,cardvalue: "9",cartext: "9",checked: false,isHint: true,type: "ht"},
+					{card: 8,cardvalue: "8",cartext: "8",checked: false,isHint: true,type: "fk"},
+					{card: 7,cardvalue: "7",cartext: "7",checked: false,isHint: true,type: "fk"},
+					{card: 4,cardvalue: "4",cartext: "4",checked: false,isHint: true,type: "fk"},
+					{card: 4,cardvalue: "4",cartext: "4",checked: false,isHint: true,type: "hx"},
+					{card: 4,cardvalue: "4",cartext: "4",checked: false,isHint: true,type: "ht"},
+					{card: 3,cardvalue: "3",cartext: "3",checked: false,isHint: true,type: "ht"},
+					{card: 3,cardvalue: "3",cartext: "3",checked: false,isHint: true,type: "mh"}
+				],
 				play4paper: [],
 				show1: false,
 				show2: false,
@@ -141,9 +214,179 @@
 			window.addEventListener('resize', this.handleResize)
 		},
 		methods: {
+			// 提示
+			testhit(num){
+				// 3,4,5,6,7,8,9,10, J , Q , K , A , 2 ,小王,大王
+				// 3,4,5,6,7,8,9,10, 11, 12, 13, 14, 15, 16 ,17
+				var card=[];
+				switch(num){
+					case 1:
+					// 单张
+						card=[
+							{card: 3,isHint:true}
+							];
+						break;
+					case 2:
+					// 对子
+						card=[
+							{card: 3,isHint:true},
+							{card: 3,isHint:true}
+							];
+						break;
+					case 3:
+					// 三张
+						card=[
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 3,isHint:true}
+							];
+						break;
+					case 4:
+					// 三带一
+						card=[
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 4,isHint:true}
+							];
+						break;
+					case 5:
+					// 三带二
+						card=[
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 4,isHint:true},
+							{card: 4,isHint:true}
+							];
+						break;
+					case 6:
+					// 四带二
+						card=[
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 4,isHint:true},
+							{card: 4,isHint:true}
+							];
+						break;
+					case 7:
+					// 四带两对
+						card=[
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 4,isHint:true},
+							{card: 4,isHint:true},
+							{card: 5,isHint:true},
+							{card: 5,isHint:true}
+							];
+						break;
+					case 8:
+					// 顺子
+						card=[
+							{card: 3,isHint:true},
+							{card: 4,isHint:true},
+							{card: 5,isHint:true},
+							{card: 6,isHint:true},
+							{card: 7,isHint:true}
+							];
+						break;
+					case 9:
+					// 连对
+						card=[
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 4,isHint:true},
+							{card: 4,isHint:true},
+							{card: 5,isHint:true},
+							{card: 5,isHint:true}
+							];
+						break;
+					case 10:
+					// 飞机
+						card=[
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 4,isHint:true},
+							{card: 4,isHint:true},
+							{card: 4,isHint:true}
+							];
+						break;
+					case 11:
+					// 飞机带单
+						card=[
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 4,isHint:true},
+							{card: 4,isHint:true},
+							{card: 4,isHint:true},
+							{card: 5,isHint:true},
+							{card: 6,isHint:true}
+							];
+						break;
+					case 12:
+					// 飞机带双
+						card=[
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 4,isHint:true},
+							{card: 4,isHint:true},
+							{card: 4,isHint:true},
+							{card: 5,isHint:true},
+							{card: 5,isHint:true},
+							{card: 6,isHint:true},
+							{card: 6,isHint:true}
+							];
+						break;
+					case 13:
+					// 炸弹
+						card=[
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 3,isHint:true},
+							{card: 3,isHint:true}
+							];
+						break;
+					case 14:
+					// 王炸
+						card=[
+							{card: 16,isHint:true},
+							{card: 17,isHint:true}
+							];
+						break;
+				}
+				var which=this.hintCards(card,this.play3paper)
+				console.log(which);
+				console.log(this.play3paper)
+				this.play3paper.forEach(item => {
+					item.checked=false
+				})
+				if(which){
+					for(var i=0;i<which.length;i++){
+						for(var j=0;j<this.play3paper.length;j++){
+							if(which[i]==this.play3paper[j].card  &&  this.play3paper[j].checked==false) {
+								this.play3paper[j].checked=true;
+								break
+							}
+						}
+					}
+				}
+				
+				
+			},
+			// 出牌
+			testshowcard(){
+				
+			},
 			sendpaper() {
 				// 生成指定发牌张数
-				var cardArr = this.dealPoker(10);
+				var cardArr = this.dealPoker(54);
 				console.log()
 				let PersonNum = 3; // 人数
 				let Arr = []; //根据玩家人数生成数组
@@ -178,14 +421,16 @@
 						cardvalue: 'small',
 						cartext:'JOKER',
 						checked: false,
-						card: 16
+						card: 16,
+						isHint:true
 					},
 					{
 						type: 'big',
 						cardvalue: 'big',
 						cartext:'JOKER',
 						checked: false,
-						card: 17
+						card: 17,
+						isHint:true
 					}
 				]
 				// 第四步:根据上述数组生成54张牌
@@ -212,7 +457,8 @@
 							cardvalue: cardValue[j],
 							checked: false,
 							card: card,
-							cartext:cardValue[j]
+							cartext:cardValue[j],
+							isHint:true
 						});
 					}
 				}
@@ -591,7 +837,8 @@
 		position: absolute;
 		left: 50%;
 		top: 50%;
-		transform: translate(-50%, -50%);
+		/* transform: translate(-50%, -50%); */
+		 transform: translate(-50%, -103%); 
 		text-align: center;
 	}
 
@@ -776,11 +1023,13 @@
 
 	.paperOperate {
 		margin-bottom: 10rpx;
-		max-width:160rpx;
-		margin:0 auto
+		/* max-width:240rpx; */
+		margin:0 auto;
+		margin-bottom:20rpx;
 	}
 
 	.nopaper,
+	.hit,
 	.surePaper {
 		font-size: 16rpx;
 		float: left;
@@ -790,8 +1039,8 @@
 		color: #fff;
 	}
 
-	.nopaper {
-		margin-right: 10rpx
+	.hit {
+		/* margin:0  10rpx */
 	}
 
 	.mycarlist {
