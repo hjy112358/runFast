@@ -12,7 +12,6 @@ function hintCards(previousCards, allCards) {
 	let prevCards = previousCards.length && judgeCards(previousCards).status ? judgeCards(previousCards) : null; //上家牌型
 	let canHintCards = []; //还未被提示过的牌
 
-	console.log(prevCards)
 
 	// 筛选出当前能提示的牌型
 	allCards.forEach(item => {
@@ -259,7 +258,6 @@ function hintCards(previousCards, allCards) {
 		})
 	}
 
-	console.log(res)
 	return res;
 }
 
