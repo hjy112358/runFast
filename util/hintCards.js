@@ -271,7 +271,7 @@ function hintCards(previousCards, allCards) {
  */
 function changeState(res, allCards) {
 	allCards.forEach(item => {
-		if (item.card == judgeCards(res).val) {
+		if (item.card == res[0]) {
 			item.isHint = false
 		}
 	})
