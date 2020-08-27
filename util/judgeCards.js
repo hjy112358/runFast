@@ -24,23 +24,10 @@ function judgeCards(objArr) {
 	let len = objArr.length;
 	let cards = []; //根据出的牌的信息，获取牌面数字数组
 
-<<<<<<< HEAD
 	objArr.forEach((item) => {
 		cards.push(parseInt(item.card))
 	})
 	console.log(cards)
-=======
-
-	objArr.forEach((item) => {
-		if (item.card) {
-			// 所给的每张牌的信息是对象
-			cards.push(parseInt(item.card));
-		} else {
-			// 所给的每张牌的信息是数字或者字符串
-			cards.push(parseInt(item))
-		}
-	});
->>>>>>> f24aa0a8da6c74c5bf7a7ac49931527afb00e060
 
 
 	// 按牌的数量分别判断
