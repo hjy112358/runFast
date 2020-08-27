@@ -81,7 +81,7 @@ function analyzeCards(allCards) {
 	// 判断顺子
 	let wipeBNum = []; //去除炸弹后所有的数字
 	vCount.forEach((item) => {
-		if (item.count < 4 && item.val <= 15) {
+		if (item.count < 4 && item.val < 15) {
 			wipeBNum.push(item.val)
 		}
 	})
