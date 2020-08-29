@@ -1,5 +1,8 @@
 <template>
 	<view class="content">
+		<view class="">
+			<button type="primary" @tap='test()'>测试</button>
+		</view>
 		<view class="landlordCard clearfix">
 			<view class="card big cardohter big-card " v-for='(item,index) in landlordCard' :key="index" v-show='island'>
 				<view class="" v-if="landsure">
@@ -9,10 +12,10 @@
 						<view class="card-num-right big-num" :style="cardcolor(item)">{{item.cartext}}</view>
 					</view>
 				</view>
-				<view class=""  v-else >
+				<view class="" v-else>
 					<image src="/static/paper.png" class="paper"></image>
 				</view>
-				
+
 			</view>
 		</view>
 		<view class="play2 palybox">
@@ -22,7 +25,7 @@
 			<view class="listrans">
 				<view class="cardlist clearfix">
 					<view class="card big cardohter big-card " v-for='(item,index) in play2paper' :key="index" :style="cardtop(play2paper)">
-						 <image src="/static/paper.png" class="paper"></image>
+						<image src="/static/paper.png" class="paper"></image>
 					</view>
 				</view>
 			</view>
@@ -39,71 +42,26 @@
 				</view>
 			</view>
 			<!-- 出牌按钮 -->
-			<!-- <view class="paperOperate clearfix"  v-show='sendBtn'>
-				<view class="nopaper" @tap='sendNo()'>
-					<text>不出</text>
-				</view>
-				<view class="hit" @tap='hit()'>
-					<text>提示 </text>
-				</view>
-				<view class="surePaper" @tap='showcard()'>
-					<text>出牌</text>
-				</view>
-			</view> -->
-			<!-- 测试 -->
 			<view class="paperOperate clearfix" >
-				<!-- <view class="nopaper">
-					<text>不出</text>
-				</view> -->
-				<view class="hit" @tap='testhit(1)'>
-					<text>单张 </text>
-				</view>
-				<view class="hit" @tap='testhit(2)'>
-					<text>对子 </text>
-				</view>
-				<view class="hit" @tap='testhit(3)'>
-					<text>三张 </text>
-				</view>
-				<view class="hit" @tap='testhit(4)'>
-					<text>三带一 </text>
-				</view>
-				<view class="hit" @tap='testhit(5)'>
-					<text>三带二</text>
-				</view>
-				<view class="hit" @tap='testhit(6)'>
-					<text>四带二 </text>
-				</view>
-				<view class="hit" @tap='testhit(7)'>
-					<text>四带两队 </text>
-				</view>
-				<view class="hit" @tap='testhit(8)'>
-					<text>顺子  </text>
-				</view>
-				<view class="hit" @tap='testhit(9)'>
-					<text>连队  </text>
-				</view>
-				<view class="hit" @tap='testhit(10)'>
-					<text>飞机  </text>
-				</view>
-				<view class="hit" @tap='testhit(11)'>
-					<text>飞机带单   </text>
-				</view>
-				<view class="hit" @tap='testhit(12)'>
-					<text>飞机带双   </text>
-				</view>
-				<view class="hit" @tap='testhit(13)'>
-					<text>炸弹</text>
-				</view>
-				<view class="hit" @tap='testhit(14)'>
-					<text>王炸</text>
+				<view class="" v-show='sendBtn'>
+					<view class="nopaper" @tap='sendNo()'>
+						<text>不出</text>
+					</view>
+					<view class="hit" @tap='hit()'>
+						<text>提示 </text>
+					</view>
+					<view class="surePaper" @tap='showcard()'>
+						<text>出牌</text>
+					</view>
 				</view>
 				
-				<!-- <view class="surePaper" @tap='testshowcard()'>
-					<text>出牌</text>
-				</view> -->
+				<view class="nocard" @tap='sendNo()' v-show='nocard'>
+					<text>要不起</text>
+				</view>
 			</view>
+
 			<!-- 抢地主按钮 -->
-			<!-- <view class="grabCardbox clearfix" v-show='timeBtn'>
+			<view class="grabCardbox clearfix" v-show='timeBtn'>
 				<view class="noGrad fl" @tap='noNeed()'>
 					<text>不抢</text>
 				</view>
@@ -116,15 +74,19 @@
 				<view class="grabCard fl" @tap="need()">
 					<text>抢地主</text>
 				</view>
-			</view> -->
+			</view>
 			<view class="cardlist clearfix cardnormal mycarlist">
 				<view class="card big cardwrap big-card" v-for='(item,index) in play3paper' :key="index" :style="mycardleft(play3paper,item,index)"
-				 @tap='checkCard(item,index)' >
+				 @tap='checkCard(item,index)'>
 					<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cartext}}</view>
 					<view class="carimg">
 						<image :src="cardimg(item)" mode="" class="card-type"></image>
 						<view class="card-num-right big-num" :style="cardcolor(item)">{{item.cartext}}</view>
 					</view>
+					
+				</view>
+				<view class="mark" v-show='nocard'>
+					<text>您没有牌大过上家</text>
 				</view>
 			</view>
 			<text class="player">我</text>
@@ -141,7 +103,7 @@
 				</view>
 			</view>
 		</view>
-		<!-- <view class="paperCenter" v-show='showpaper'>
+		<view class="paperCenter" v-show='showpaper'>
 			<view class="paperbox">
 				<image src="/static/paper.png" class="paper"></image>
 			</view>
@@ -155,7 +117,7 @@
 				<image src="/static/paper.png" class="papermove"></image>
 			</transition>
 			<text class="send" @tap="sendpaper()">发牌</text>
-		</view> -->
+		</view>
 	</view>
 </template>
 
@@ -169,26 +131,7 @@
 				play3: [],
 				play4: [],
 				play2paper: [],
-				play3paper: [
-					{card: 14,cardvalue: "A",cartext: "A",checked: false,isHint: true,type: "fk"},
-					{card: 14,cardvalue: "A",cartext: "A",checked: false,isHint: true,type: "mh"},
-					{card: 14,cardvalue: "A",cartext: "A",checked: false,isHint: true,type: "hx"},
-					{card: 14,cardvalue: "A",cartext: "A",checked: false,isHint: true,type: "fk"},
-					{card: 13,cardvalue: "K",cartext: "K",checked: false,isHint: true,type: "mh"},
-					{card: 13,cardvalue: "K",cartext: "K",checked: false,isHint: true,type: "ht"},
-					{card: 12,cardvalue: "Q",cartext: "Q",checked: false,isHint: true,type: "fk"},
-					{card: 11,cardvalue: "J",cartext: "J",checked: false,isHint: true,type: "fk"},
-					{card: 10,cardvalue: "10",cartext: "10",checked: false,isHint: true,type: "fk"},
-					{card: 9,cardvalue: "9",cartext: "9",checked: false,isHint: true,type: "fk"},
-					{card: 9,cardvalue: "9",cartext: "9",checked: false,isHint: true,type: "ht"},
-					{card: 8,cardvalue: "8",cartext: "8",checked: false,isHint: true,type: "fk"},
-					{card: 7,cardvalue: "7",cartext: "7",checked: false,isHint: true,type: "fk"},
-					{card: 4,cardvalue: "4",cartext: "4",checked: false,isHint: true,type: "fk"},
-					{card: 4,cardvalue: "4",cartext: "4",checked: false,isHint: true,type: "hx"},
-					{card: 4,cardvalue: "4",cartext: "4",checked: false,isHint: true,type: "ht"},
-					{card: 3,cardvalue: "3",cartext: "3",checked: false,isHint: true,type: "ht"},
-					{card: 3,cardvalue: "3",cartext: "3",checked: false,isHint: true,type: "mh"}
-				],
+				play3paper: [],
 				play4paper: [],
 				show1: false,
 				show2: false,
@@ -199,12 +142,17 @@
 				sendBtn: false,
 				chooseArray: [], //选择的牌
 				pushcard: [],
-				timer:5 ,  // 计时器
-				timeBtn:false,
-				landlordCard:[],   //地主牌
-				island:false,   //是否显示地主牌列表
-				landsure:false   //是否抢地主
-			}  
+				timer: 5, // 计时器
+				timeBtn: false,
+				landlordCard: [], //地主牌
+				island: false, //是否显示地主牌列表
+				landsure: false, //是否抢地主
+				isturn: 'other',
+				testcard :[{card:'3',isHint:true}],
+				nocard:false, //要不起按钮
+				isfirst:true,   //监测是否第一次就是null
+				hintcard:[]   //提示选中的牌
+			}
 		},
 		components: {
 			uniList,
@@ -213,181 +161,33 @@
 		created() {
 			window.addEventListener('resize', this.handleResize)
 		},
+		watch: {
+			// 监听是否是本家出牌
+			isturn(val, oldVal) { 
+				var which = this.hintCards(this.testcard, this.play3paper);
+				if(!which){
+					this.sendBtn=false;
+					this.nocard=true;
+					
+				}else{
+					this.sendBtn=true;
+					this.isfirst=false
+				}
+				if(!oldVal){
+					this.sendBtn=true;
+					this.nocard=false
+				}
+			}
+		},
 		methods: {
-			// 提示   
-			testhit(num){
-				// 3,4,5,6,7,8,9,10, J , Q , K , A , 2 ,小王,大王
-				// 3,4,5,6,7,8,9,10, 11, 12, 13, 14, 15, 16 ,17
-				var card=[];
-				switch(num){
-					case 1:
-					// 单张
-						card=[
-							{card: 3,isHint:true}
-							];
-						break;
-					case 2:
-					// 对子
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true}
-							];
-						break;
-					case 3:
-					// 三张
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true}
-							];
-						break;
-					case 4:
-					// 三带一
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true}
-							];
-						break;
-					case 5:
-					// 三带二
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true}
-							];
-						break;
-					case 6:
-					// 四带二
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true}
-							];
-						break;
-					case 7:
-					// 四带两对
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true},
-							{card: 5,isHint:true},
-							{card: 5,isHint:true}
-							];
-						break;
-					case 8:
-					// 顺子
-						card=[
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 5,isHint:true},
-							{card: 6,isHint:true},
-							{card: 7,isHint:true}
-							];
-						break;
-					case 9:
-					// 连对
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true},
-							{card: 5,isHint:true},
-							{card: 5,isHint:true}
-							];
-						break;
-					case 10:
-					// 飞机
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true}
-							];
-						break;
-					case 11:
-					// 飞机带单
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true},
-							{card: 5,isHint:true},
-							{card: 6,isHint:true}
-							];
-						break;
-					case 12:
-					// 飞机带双
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true},
-							{card: 5,isHint:true},
-							{card: 5,isHint:true},
-							{card: 6,isHint:true},
-							{card: 6,isHint:true}
-							];
-						break;
-					case 13:
-					// 炸弹
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true}
-							];
-						break;
-					case 14:
-					// 王炸
-						card=[
-							{card: 16,isHint:true},
-							{card: 17,isHint:true}
-							];
-						break;
-				}
-				var which=this.hintCards(card,this.play3paper)
-				console.log(which);
-				console.log(this.play3paper)
-				this.play3paper.forEach(item => {
-					item.checked=false
-				})
-				if(which){
-					for(var i=0;i<which.length;i++){
-						for(var j=0;j<this.play3paper.length;j++){
-							if(which[i]==this.play3paper[j].card  &&  this.play3paper[j].checked==false) {
-								this.play3paper[j].checked=true;
-								break
-							}
-						}
-					}
-				}
-				
-				
+			// 测试轮到本家出牌
+			test() {
+				this.isturn = 'me'
 			},
-			// 出牌
-			testshowcard(){
-				
-			},
+			//发牌
 			sendpaper() {
 				// 生成指定发牌张数
 				var cardArr = this.dealPoker(54);
-				console.log()
 				let PersonNum = 3; // 人数
 				let Arr = []; //根据玩家人数生成数组
 				for (let i = 0; i < PersonNum; i++) {
@@ -401,11 +201,12 @@
 						}
 					});
 				});
-				this.play2=Arr[0]
-				this.play3=Arr[1]
-				this.play4=Arr[2]
-				this.sendTwo();
+				this.play2 = Arr[0]
+				this.play3 = Arr[1]
+				this.play4 = Arr[2]
+				this.sendLeft();
 			},
+			// 生成扑克牌
 			generatePoker() {
 				// 生成扑克牌
 				// 牌的顺序
@@ -419,18 +220,18 @@
 				var specialCard = [{
 						type: 'small',
 						cardvalue: 'small',
-						cartext:'JOKER',
+						cartext: 'JOKER',
 						checked: false,
 						card: 16,
-						isHint:true
+						isHint: true
 					},
 					{
 						type: 'big',
 						cardvalue: 'big',
-						cartext:'JOKER',
+						cartext: 'JOKER',
 						checked: false,
 						card: 17,
-						isHint:true
+						isHint: true
 					}
 				]
 				// 第四步:根据上述数组生成54张牌
@@ -457,8 +258,8 @@
 							cardvalue: cardValue[j],
 							checked: false,
 							card: card,
-							cartext:cardValue[j],
-							isHint:true
+							cartext: cardValue[j],
+							isHint: true
 						});
 					}
 				}
@@ -466,7 +267,7 @@
 				allCards = allCards.concat(specialCard);
 				return allCards;
 			},
-			// 生成指定张数的牌
+			// 生成指定张数的牌并洗牌
 			dealPoker(num) {
 				if (!num || num > 54 || typeof(num) !== 'number') {
 					throw '错误，传入的数字非法，只能是[1-54]';
@@ -475,14 +276,14 @@
 				var allCards = this.generatePoker();
 				// 洗牌
 				var randomCards = this.shuffle(allCards);
-				randomCards=randomCards.slice(0, num)
-				for(var i=0;i<3;i++){
-					var index=Math.floor(Math.random()*randomCards.length)
-					var land=randomCards[index];
-					randomCards.splice(index,1);
+				randomCards = randomCards.slice(0, num)
+				for (var i = 0; i < 3; i++) {
+					var index = Math.floor(Math.random() * randomCards.length)
+					var land = randomCards[index];
+					randomCards.splice(index, 1);
 					this.landlordCard.push(land);
 				}
-				
+
 				return randomCards;
 			},
 			// 洗牌
@@ -539,7 +340,7 @@
 				}
 			},
 			// 改变当前自己牌的堆叠位置
-			mycardleft(play, item,index) {
+			mycardleft(play, item, index) {
 				var marginL = '-50rpx';
 				var marginT = '19rpx';
 				if (item.checked) {
@@ -547,7 +348,7 @@
 				} else {
 					marginT = '19rpx'
 				}
-				if(index==0){
+				if (index == 0) {
 					marginL = '0';
 				}
 				return {
@@ -555,7 +356,8 @@
 					marginTop: marginT
 				}
 			},
-			sendTwo() {
+			// 给左玩家发牌
+			sendLeft() {
 				var _this = this;
 				var _this = this;
 				//创建音频
@@ -574,8 +376,8 @@
 						// 发牌结束 关闭音频
 						if (_this.play3.length > 0) {
 							_this.show2 = !_this.show2;
-							_this.sendThree()
-						} 
+							_this.sendSelf()
+						}
 						_this.isclose()
 					}, 100)
 				} else {
@@ -583,7 +385,8 @@
 					return false
 				}
 			},
-			sendThree() {
+			// 给本家发牌
+			sendSelf() {
 				var _this = this;
 				if (_this.play3.length > 0) {
 					setTimeout(function() {
@@ -596,17 +399,18 @@
 						// 发牌结束 关闭音频
 						if (_this.play4.length > 0) {
 							_this.show3 = !_this.show3;;
-							_this.sendFour()
-						} 
+							_this.sendRight()
+						}
 						_this.isclose()
-						
+
 					}, 200)
 				} else {
 					_this.isclose()
 					return false
 				}
 			},
-			sendFour() {
+			// 给右玩家发牌
+			sendRight() {
 				var _this = this;
 				if (_this.play4.length > 0) {
 					setTimeout(function() {
@@ -618,8 +422,8 @@
 						_this.play4 = _this.play4.slice(1);
 						// 发牌结束 关闭音频
 						if (_this.play2.length > 0) {
-							_this.sendTwo();
-						} 
+							_this.sendLeft();
+						}
 						_this.isclose()
 					}, 200)
 				} else {
@@ -627,34 +431,33 @@
 					return false
 				}
 			},
-			isclose(){
-				var _this=this
-				if(_this.play2.length ==0&&_this.play3.length==0&&_this.play4.length==0){
-					
+			// 判断发牌是否结束
+			isclose() {
+				var _this = this
+				if (_this.play2.length == 0 && _this.play3.length == 0 && _this.play4.length == 0) {
 					_this.audio.pause();
-					_this.timeBtn=true;
-					_this.showpaper=false;
+					_this.timeBtn = true;
+					_this.showpaper = false;
 					_this.counDown();
-					_this.island=true
+					_this.island = true
 				}
 			},
 			// 叫地主倒计时
-			counDown(){
-				var _this=this;
-				var time=setInterval(function(){
+			counDown() {
+				var _this = this;
+				var time = setInterval(function() {
 					_this.timer--;
-					if(_this.timer == 0){
+					if (_this.timer == 0) {
 						clearInterval(time);
-						_this.timeBtn=false;
-						_this.sendBtn = true;
+						_this.timeBtn = false;
 					}
-				},1000);
+				}, 1000);
 
 			},
-			// 牌的排序
+			// 给牌排序
 			sortCard(cards) {
 				return cards.sort((a, b) => {
-					let num = ['3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A', '2','small','big']
+					let num = ['3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A', '2', 'small', 'big']
 					let x = num.findIndex(n => n === a.cardvalue)
 					let y = num.findIndex(n => n === b.cardvalue)
 					if (x < y) {
@@ -666,6 +469,7 @@
 					}
 				})
 			},
+			// 选择牌
 			checkCard(item, index) {
 				// 选择牌
 				this.play3paper[index].checked = !this.play3paper[index].checked;
@@ -675,46 +479,87 @@
 				this.chooseArray = [];
 				var newarry = this.play3paper;
 				var reloadarry = []
-				for (var index in this.play3paper) {
-					if (this.play3paper[index].checked) {
-						this.chooseArray.push(this.play3paper[index]);
-					} else {
-						reloadarry.push(this.play3paper[index])
+				if(this.hintcard.length>0){
+					for (var index in this.play3paper) {
+						if (this.play3paper[index].checked) {
+							this.chooseArray.push(this.play3paper[index]);
+						} else {
+							reloadarry.push(this.play3paper[index])
+						}
 					}
-				}
-				var result=this.judgeCards(this.chooseArray)
-				console.log(result)
-				if(result){
+					this.chooseArray=this.hintcard;
 					this.play3paper = reloadarry;
 				}else{
-					this.chooseArray=[];
-					alert("你出的牌不符合规则")
+					var checkd=[]
+					for (var index in this.play3paper) {
+						if (this.play3paper[index].checked) {
+							checkd.push(this.play3paper[index]);
+						} else {
+							reloadarry.push(this.play3paper[index])
+						}
+					}
+					var result = this.judgeCards(checkd);
+					var last=this.judgeCards(this.testcard);
+					if (result) {
+						var follow=this.follow(last,result);
+						if(follow){
+							this.chooseArray=checkd
+							this.play3paper = reloadarry;
+						}else{
+							this.chooseArray = [];
+							alert("你出的牌比不上家")
+						}
+						
+					} else {
+						this.chooseArray = [];
+						alert("你出的牌不符合规则")
+					}
 				}
-				
-				
-				// 对战时
-				// 1.AI监测当前是否有比上家大的牌
-				
-				// 2.选择牌后判断是否满足出牌规则
-				// this.judgeCards(this.chooseArray)
-				// 3.满足出牌规则后，再判断出牌是否大过上家
 				
 			},
 			// 抢地主
-			need(){
-				for(var i=0;i<this.landlordCard.length;i++){
+			need() {
+				for (var i = 0; i < this.landlordCard.length; i++) {
 					this.play3paper.push(this.landlordCard[i]);
 				}
 				this.sortCard(this.play3paper);
-				this.island=false;
-				this.timeBtn=false;
-				this.landsure=true;
+				this.island = false;
+				this.timeBtn = false;
+				this.landsure = true;
 			},
 			// 不抢地主
-			noNeed(){
-				this.timeBtn=false;
-				this.sendBtn = true;
-			}
+			noNeed() {
+				this.timeBtn = false;
+			},
+			// 不出
+			sendNo(){
+				this.sendBtn=false;
+				this.nocard=false
+			},
+			// 提示
+			hit() {
+				var which = this.hintCards(this.testcard, this.play3paper)
+				console.log(which);
+				this.play3paper.forEach(item => {
+					item.checked = false;
+					this.hintcard=[]
+				})
+				if (which) {
+					for (var i = 0; i < which.length; i++) {
+						for (var j = 0; j < this.play3paper.length; j++) {
+							if (which[i] == this.play3paper[j].card && this.play3paper[j].checked == false) {
+								this.play3paper[j].checked = true;
+								this.hintcard.push(this.play3paper[j])
+								break
+							}
+						}
+					}
+				}
+				if(!(this.isfirst)&&!which){
+					this.isfirst=true;
+					this.hit()
+				}
+			},
 			
 		},
 		onLaunch: function() {
@@ -767,10 +612,12 @@
 		width: 70rpx;
 		height: 126rpx;
 	}
-	.cardshowlist{
-		width:55%;
-		margin:0 auto
+
+	.cardshowlist {
+		width: 55%;
+		margin: 0 auto
 	}
+
 	.cardnormal .card {
 		float: left;
 	}
@@ -837,8 +684,7 @@
 		position: absolute;
 		left: 50%;
 		top: 50%;
-		/* transform: translate(-50%, -50%); */
-		 transform: translate(-50%, -103%); 
+		transform: translate(-50%, -50%);
 		text-align: center;
 	}
 
@@ -883,9 +729,9 @@
 		position: absolute;
 		bottom: 10rpx;
 		left: 50%;
-		transform: translateX(-50%);
-		width:80%;
-		
+		transform: translateX(-48%);
+		width: 90%;
+
 	}
 
 	.play2 {
@@ -1023,9 +869,9 @@
 
 	.paperOperate {
 		margin-bottom: 10rpx;
-		/* max-width:240rpx; */
-		margin:0 auto;
-		margin-bottom:20rpx;
+		max-width: 240rpx;
+		margin: 0 auto;
+		margin-bottom: 20rpx;
 	}
 
 	.nopaper,
@@ -1038,34 +884,47 @@
 		border-radius: 10rpx;
 		color: #fff;
 	}
+	.nocard{
+		font-size: 16rpx;
+		display:inline-block;
+		padding: 10rpx 20rpx;
+		background: #008000;
+		border-radius: 10rpx;
+		color: #fff;
+	}
 
 	.hit {
-		/* margin:0  10rpx */
+		margin: 0 10rpx
 	}
 
 	.mycarlist {
 		height: 180rpx
 	}
-	.cardohter{
-		padding:0;
+
+	.cardohter {
+		padding: 0;
 		background: transparent;
-		border:0
+		border: 0
 	}
-	.cardshowlist{
+
+	.cardshowlist {
 		position: absolute;
 		top: -69%;
 		left: 50%;
 		transform: translateX(-50%);
 		width: auto;
 	}
-	.fl{
-		float:left
+
+	.fl {
+		float: left
 	}
-	.grabCardbox{
+
+	.grabCardbox {
 		display: inline-block;
 	}
+
 	.noGrad,
-	.grabCard{
+	.grabCard {
 		width: 90rpx;
 		height: 40rpx;
 		background: #64b923;
@@ -1075,35 +934,39 @@
 		line-height: 40rpx;
 		font-weight: 530;
 	}
-	.grabCard{
-		background:#f59104;
+
+	.grabCard {
+		background: #f59104;
 	}
-	.countDown text{
+
+	.countDown text {
 		font-size: 20rpx;
-		color:#FF5A5F;
-		position:absolute;
-		top:50%;
-		left:50%;
-		transform:translate(-50%,-50%);
-		margin-top:1rpx
+		color: #FF5A5F;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		margin-top: 1rpx
 	}
-	.countDown{
-		width:50rpx;
-		height:50rpx;
-		position:relative;
-		margin:0 20rpx;
-		margin-top:-15rpx;
-		
+
+	.countDown {
+		width: 50rpx;
+		height: 50rpx;
+		position: relative;
+		margin: 0 20rpx;
+		margin-top: -15rpx;
+
 	}
-	.countDown image{
-		width:50rpx;
-		height:50rpx;
+
+	.countDown image {
+		width: 50rpx;
+		height: 50rpx;
 	}
-	
+
 	/* 地主牌展示 */
-	.landlordCard .card{
-		float:left;
-		margin-right:20rpx;
+	.landlordCard .card {
+		float: left;
+		margin-right: 20rpx;
 		border: 1px solid #ccc;
 		border-image: initial;
 		border-color: #ccc;
@@ -1111,10 +974,27 @@
 		border-radius: 4px;
 		font-family: monospace;
 		text-align: center;
-		padding:3rpx
 	}
-	.landlordCard{
-		margin-top:20rpx;
-		
+
+	.landlordCard {
+		margin-top: 20rpx;
+
+	}
+	.mark{
+		position: absolute;
+		top: 60rpx;
+		left: 0;
+		width: 100%;
+		height: 60%;
+		display: table;
+	}
+	.mark text{
+		display: table-cell;
+		vertical-align: middle;
+		color:orange;
+		padding-top:75rpx;
+		font-size:30rpx;
+		font-family: cursive;
+		font-weight: bold;
 	}
 </style>
