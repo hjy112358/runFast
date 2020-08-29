@@ -121,6 +121,7 @@
 	</view>
 </template>
 
+
 <script>
 	import uniList from '../../components/uni-list/uni-list.vue'
 	import uniListItem from '../../components/uni-list-item/uni-list-item.vue'
@@ -983,7 +984,7 @@
 	}
 	.mark{
 		position: absolute;
-		top: 60rpx;
+		top: 0;
 		left: 0;
 		width: 100%;
 		height: 60%;
@@ -993,7 +994,7 @@
 		display: table-cell;
 		vertical-align: middle;
 		color:orange;
-		padding-top:75rpx;
+		padding-top:30px;
 		font-size:30rpx;
 		font-family: cursive;
 		font-weight: bold;
