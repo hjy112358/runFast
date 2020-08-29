@@ -2,7 +2,7 @@
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			// "path": "pages/poker/pokerTest",
-			"path": "pages/poker/pokerIndex",
+			"path": "pages/poker/newIndex",
 			"style": {
 				"navigationBarTitleText": "棋牌"
 			}
@@ -12,6 +12,7 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "棋牌",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"navigationStyle":"custom"
 	}
 }
