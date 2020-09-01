@@ -24,16 +24,20 @@ function follow(lastype,yourtype) {
 			if (lastype.val == 'KINGBOMB') {
 				// 上家王炸，肯定不能出
 				return false;
-			} else if (lastype.val == 'BOMB' ) {
-				// 我王炸，肯定能出
-				if(yourtype.val=='KINGBOMB'){
+			} else {
+				if (lastype.val == 'BOMB' ) {
+					// 我王炸，肯定能出
+					if(yourtype.val=='KINGBOMB'){
+						return true
+					}else{
+						res = compareGrade(lastype.val, yourtype.val);
+						return res;
+					}
+				}else{
 					return true
-				}else if(yourtype.val=='BOMB'){
-					res = compareGrade(lastype.val, yourtype.val);
-					return res;
 				}
-				
 			}
+			
 		}
 	}
 
