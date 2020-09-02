@@ -11,7 +11,7 @@
 
 			<!-- 底牌 -->
 			<view class="landlordCard clearfix" v-if='!island'>
-				<image src="/static/image/landcard.png"   v-for='(item,index) in landlordCardBG' :key="index" :class="index==0?'':'marl6'"></image>
+				<image src="/static/image/landcard.png"   v-for='(item,index) in landlordCard' :key="index" :class="index==0?'':'marl6'"></image>
 			</view>
 			<view class="landlordCard clearfix"  v-else>
 				<image :src="item1.src"   v-for='(item1,index1) in landlordCard' :key="index1" :class="index1==0?'':'marl6'"></image>
@@ -265,12 +265,12 @@
 				timer: 5, // 计时器
 				timeBtn: false,
 				landlordCard: [], //地主牌
-				landlordCardBG: [{},{},{}], //地主牌
+				// landlordCardBG: [{},{},{}], //地主牌
 				island: false, //是否显示地主牌列表
 				landsure: false, //是否抢地主
 				isturn: 'other',
 				testcard: [{
-					card: '17',
+					card: '10',
 					isHint: true
 				}],
 				nocard: false, //要不起按钮
@@ -454,52 +454,24 @@
 				}
 				return newArr;
 			},
-			// 根据花色显示相应颜色
-			cardcolor(item) {
-				var color;
-				if (item.type == 'fk' || item.type == 'hx' || item.type == 'big') {
-					color = '#f00'
-				} else if (item.type == 'mh' || item.type == 'ht' || item.type == 'small') {
-					color = '#000'
-				}
-				return {
-					color: color
-				};
-			},
-			// 花色图片
-			cardimg(item) {
-				var imgsrc = '';
-				if (item.type == 'ht') {
-					imgsrc = '../../static/ht.png'
-				} else if (item.type == 'hx') {
-					imgsrc = '../../static/hx.png'
-				} else if (item.type == 'mh') {
-					imgsrc = '../../static/mh.png'
-				} else if (item.type == 'fk') {
-					imgsrc = '../../static/fk.png'
-				} else if (item.type == 'big') {
-					imgsrc = '../../static/big.png'
-				} else if (item.type == 'small') {
-					imgsrc = '../../static/small.png'
-				}
-				return imgsrc
-			},
+			
+		
 			// 改变左边跟右边玩家牌的堆叠位置
 			cardtop(play) {
 				var len = play.length;
-				var marginT = '-74rpx'
+				var marginT = '-0.74rem'
 				return {
 					marginTop: marginT
 				}
 			},
 			// 改变当前自己牌的堆叠位置
 			mycardleft(play, item, index) {
-				var marginL = '-50rpx';
-				var marginT = '19rpx';
+				var marginL = '-0.5rem';
+				var marginT = '0.19rem';
 				if (item.checked) {
-					marginT = '0rpx'
+					marginT = '0'
 				} else {
-					marginT = '19rpx'
+					marginT = '0.19rem'
 				}
 				if (index == 0) {
 					marginL = '0';
@@ -1103,7 +1075,6 @@
 		}
 	}
 	.mycarlist {
-		/* height: 180rpx; */
 		margin-top:-.15rem;
 	}
 	
@@ -1186,9 +1157,10 @@
 		top:50%;
 		transform:translateY(-65%)
 	}
-	.mybox .card {
-		width: 70rpx;
-		height: 126rpx;
+	.mybox .card,
+	.mybox .card image{
+		width: .5rem;
+		height: .8rem;
 	}
 	
 	.cardnormal .card {
@@ -1254,39 +1226,11 @@
 		background: rgba(0,0,0,.3);
 	}
 
-
-
-
-	
-	
-
-	
-
-
-
-
-	
-	
-
-
-	
-	
-
 	/* 地主牌展示 */
 	.landlordCard .card {
 		float: left;
-		margin-right: 20rpx;
-		border: 1px solid #ccc;
-		border-image: initial;
-		border-color: #ccc;
-		background: #f1f1f1;
-		border-radius: 4px;
-		font-family: monospace;
-		text-align: center;
+		margin-right: .2rem;
 	}
-	
-	
-	
 	
 	
 	/* 公用 */
