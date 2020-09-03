@@ -333,7 +333,7 @@
 			//发牌
 			sendpaper() {
 				// 生成指定发牌张数
-				var cardArr = this.dealPoker(20);
+				var cardArr = this.dealPoker(54);
 				let PersonNum = 3; // 人数
 				let Arr = []; //根据玩家人数生成数组
 				for (let i = 0; i < PersonNum; i++) {
