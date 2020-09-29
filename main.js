@@ -6,13 +6,14 @@ import hintCards from './util/hintCards.js'
 // import analyzeCards from '@/util/analyzeCards.js'
 import follow from './util/follow.js'
 import remFn from './util/rem.js'
+import requestUrl from './util/common.js'
 
 Vue.config.productionTip = false
 Vue.prototype.judgeCards = judgeCards
-// Vue.prototype.analyzeCards = analyzeCards
 Vue.prototype.hintCards = hintCards
 Vue.prototype.follow = follow
 Vue.prototype.remFn = remFn
+Vue.prototype.$requestUrl = requestUrl;
 
 
 App.mpType = 'app'

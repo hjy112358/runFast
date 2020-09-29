@@ -1,0 +1,194 @@
+.content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+	image.paper,
+	image.papermove {
+		width: 50rpx;
+		height: 100rpx
+	}
+	.paperbox {
+		position: relative;
+	}
+
+	.send {
+		font-size: 15rpx;
+		display: block;
+		width: 40rpx;
+		height: 25rpx;
+		background: #F0AD4E;
+		color: #fff;
+		text-align: center;
+		line-height: 25px;
+		border-radius: 8rpx;
+		margin: 0 auto;
+	}
+
+	.paperCenter {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		text-align: center;
+	}
+
+	.player {
+		font-size: 20rpx;
+		display: block;
+		margin: 0 auto
+	}
+
+	.palybox {
+		text-align: center;
+	}
+
+	.play1 {
+		position: absolute;
+		top: 10rpx;
+		left: 50%;
+		transform: translateX(-50%)
+	}
+
+	.play2 {
+		position: absolute;
+		top: 50%;
+		left: 10rpx;
+		transform: translateY(-50%);
+		width: 180rpx;
+		clear: both;
+	}
+
+	.play2 .player {
+		float: left;
+		width: 20rpx;
+	}
+	.play2 .listrans {
+		width: 150rpx
+	}
+
+	.listrans {
+		transform: rotate(90deg);
+		/* transform-origin:20% 40%; */
+		float: left;
+	}
+
+	.play3 {
+		position: absolute;
+		bottom: 10rpx;
+		left: 50%;
+		transform: translateX(-50%)
+	}
+
+	.play4 {
+		position: absolute;
+		top: 50%;
+		right: 10rpx;
+		transform: translateY(-50%);
+		width: 180rpx
+	}
+
+	.play4 .player {
+		float: right;
+		width: 20rpx;
+	}
+
+	.play4 .listrans {
+		float: right;
+		width: 150rpx;
+		/* margin-right:40rpx */
+	}
+
+	.marl {
+		margin-left: -30rpx
+	}
+
+	.mart {
+		margin-top: -35rpx
+	}
+	.bounce-enter-active {
+		animation: bounce-in .3s;
+	}
+
+	.bounce-leave-active {
+		animation: bounce-in .3s;
+	}
+
+	.bounce1-enter-active {
+		animation: bounce1-in .3s;
+	}
+	
+	.bounce1-leave-active {
+		animation: bounce1-in .3s;
+	}
+	.bounce2-enter-active {
+		animation: bounce2-in .3s;
+	}
+	
+	.bounce2-leave-active {
+		animation: bounce2-in .3s;
+	}
+	.bounce3-enter-active {
+		animation: bounce3-in .3s;
+	}
+	
+	.bounce3-leave-active {
+		animation: bounce3-in .3s;
+	}
+	.papermove{
+		position:absolute;
+		left:50%;
+		top:50%;
+		transform:translate(-50%,-50%);
+		margin-top:-17rpx;
+		
+	}
+	/* 玩家1 */
+	@keyframes bounce-in {
+		form {
+			top:10%;
+			opacity: 1;
+		}
+		to{
+			top:-80%;
+			opacity: 0.5;
+		}
+	}
+	/* 玩家2 */
+	@keyframes bounce1-in {
+		form {
+			left:0%;
+			opacity: 1;
+		}
+		to{
+			left:-400%;
+			opacity: 0.5;
+			
+		}
+	}
+	
+	/* 玩家3 */
+	@keyframes bounce2-in {
+		form {
+			top:80%;
+			opacity: 1;
+		}
+		to{
+			top:200%;
+			opacity: 0.5;
+		}
+	}
+	/* 玩家4 */
+	@keyframes bounce3-in {
+		form {
+			left:0%;
+			opacity: 1;
+		}
+		to{
+			left:400%;
+			opacity: 0.5;
+		}
+	}
+	
+	

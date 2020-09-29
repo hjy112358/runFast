@@ -116,7 +116,8 @@ function analyzeCards(allCards) {
 
 	// 判断单张
 	vCount.forEach(item => {
-		if (item.count == 1 && res._kingBomb.length == 0) {
+		// if (item.count == 1 && res._kingBomb.length == 0) {
+		if (item.count == 1 ) {
 			res._one.push([item.val])
 		}
 	})

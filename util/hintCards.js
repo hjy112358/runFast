@@ -16,6 +16,7 @@ function hintCards(previousCards, allCards) {
 	// 筛选出当前能提示的牌型
 	allCards.forEach(item => {
 		if (item.isHint) {
+			console.log(item.isHint)
 			canHintCards.push(item)
 		}
 	})
@@ -257,7 +258,7 @@ function hintCards(previousCards, allCards) {
 			item.isHint = true
 		})
 	}
-
+	console.log(res)
 	return res;
 }
 

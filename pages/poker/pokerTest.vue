@@ -9,10 +9,10 @@
 						<view class="card-num-right big-num" :style="cardcolor(item)">{{item.cartext}}</view>
 					</view>
 				</view>
-				<view class=""  v-else >
+				<view class="" v-else>
 					<image src="/static/paper.png" class="paper"></image>
 				</view>
-				
+
 			</view>
 		</view>
 		<view class="play2 palybox">
@@ -22,7 +22,7 @@
 			<view class="listrans">
 				<view class="cardlist clearfix">
 					<view class="card big cardohter big-card " v-for='(item,index) in play2paper' :key="index" :style="cardtop(play2paper)">
-						 <image src="/static/paper.png" class="paper"></image>
+						<image src="/static/paper.png" class="paper"></image>
 					</view>
 				</view>
 			</view>
@@ -51,10 +51,13 @@
 				</view>
 			</view> -->
 			<!-- 测试 -->
-			<view class="paperOperate clearfix" >
+			<view class="paperOperate clearfix">
 				<!-- <view class="nopaper">
 					<text>不出</text>
 				</view> -->
+				<view class="hit" @tap='testhit(0)'>
+					<text>空 </text>
+				</view>
 				<view class="hit" @tap='testhit(1)'>
 					<text>单张 </text>
 				</view>
@@ -77,19 +80,19 @@
 					<text>四带两队 </text>
 				</view>
 				<view class="hit" @tap='testhit(8)'>
-					<text>顺子  </text>
+					<text>顺子 </text>
 				</view>
 				<view class="hit" @tap='testhit(9)'>
-					<text>连队  </text>
+					<text>连队 </text>
 				</view>
 				<view class="hit" @tap='testhit(10)'>
-					<text>飞机  </text>
+					<text>飞机 </text>
 				</view>
 				<view class="hit" @tap='testhit(11)'>
-					<text>飞机带单   </text>
+					<text>飞机带单 </text>
 				</view>
 				<view class="hit" @tap='testhit(12)'>
-					<text>飞机带双   </text>
+					<text>飞机带双 </text>
 				</view>
 				<view class="hit" @tap='testhit(13)'>
 					<text>炸弹</text>
@@ -97,7 +100,7 @@
 				<view class="hit" @tap='testhit(14)'>
 					<text>王炸</text>
 				</view>
-				
+
 				<!-- <view class="surePaper" @tap='testshowcard()'>
 					<text>出牌</text>
 				</view> -->
@@ -119,10 +122,10 @@
 			</view> -->
 			<view class="cardlist clearfix cardnormal mycarlist">
 				<view class="card big cardwrap big-card" v-for='(item,index) in play3paper' :key="index" :style="mycardleft(play3paper,item,index)"
-				 @tap='checkCard(item,index)' >
+				 @tap='checkCard(item,index)'>
 					<view class="card-num-left big-num" :style="cardcolor(item)">{{item.cartext}}</view>
 					<view class="carimg">
-						<image :src="cardimg(item)" mode="" class="card-type"></image>
+						<image :src="item.src" mode="" class="card-type"></image>
 						<view class="card-num-right big-num" :style="cardcolor(item)">{{item.cartext}}</view>
 					</view>
 				</view>
@@ -170,24 +173,147 @@
 				play4: [],
 				play2paper: [],
 				play3paper: [
-					{card: 14,cardvalue: "A",cartext: "A",checked: false,isHint: true,type: "fk"},
-					{card: 14,cardvalue: "A",cartext: "A",checked: false,isHint: true,type: "mh"},
-					{card: 14,cardvalue: "A",cartext: "A",checked: false,isHint: true,type: "hx"},
-					{card: 14,cardvalue: "A",cartext: "A",checked: false,isHint: true,type: "fk"},
-					{card: 13,cardvalue: "K",cartext: "K",checked: false,isHint: true,type: "mh"},
-					{card: 13,cardvalue: "K",cartext: "K",checked: false,isHint: true,type: "ht"},
-					{card: 12,cardvalue: "Q",cartext: "Q",checked: false,isHint: true,type: "fk"},
-					{card: 11,cardvalue: "J",cartext: "J",checked: false,isHint: true,type: "fk"},
-					{card: 10,cardvalue: "10",cartext: "10",checked: false,isHint: true,type: "fk"},
-					{card: 9,cardvalue: "9",cartext: "9",checked: false,isHint: true,type: "fk"},
-					{card: 9,cardvalue: "9",cartext: "9",checked: false,isHint: true,type: "ht"},
-					{card: 8,cardvalue: "8",cartext: "8",checked: false,isHint: true,type: "fk"},
-					{card: 7,cardvalue: "7",cartext: "7",checked: false,isHint: true,type: "fk"},
-					{card: 4,cardvalue: "4",cartext: "4",checked: false,isHint: true,type: "fk"},
-					{card: 4,cardvalue: "4",cartext: "4",checked: false,isHint: true,type: "hx"},
-					{card: 4,cardvalue: "4",cartext: "4",checked: false,isHint: true,type: "ht"},
-					{card: 3,cardvalue: "3",cartext: "3",checked: false,isHint: true,type: "ht"},
-					{card: 3,cardvalue: "3",cartext: "3",checked: false,isHint: true,type: "mh"}
+					{
+						card: 16,
+						cardvalue: "joker",
+						checked: false,
+						color: "hx",
+						isHint: true,
+						num: "16",
+						src: "../../static/image/card/16.png",
+						type: "hx"
+					},
+					{
+						card: 17,
+						cardvalue: "joker",
+						checked: false,
+						color: "ht",
+						isHint: true,
+						num: "joker",
+						src: "../../static/image/card/17.png",
+						type: "ht"
+					},
+					{
+						card: 13,
+						cardvalue: "K",
+						checked: false,
+						color: "hx",
+						isHint: true,
+						num: "K",
+						src: "../../static/image/card/13-hx.png",
+						type: "hx"
+					},
+					{
+						card: 13,
+						cardvalue: "K",
+						checked: false,
+						color: "ht",
+						isHint: true,
+						num: "K",
+						src: "../../static/image/card/13-ht.png",
+						type: "ht"
+					},
+					{
+						card: 12,
+						cardvalue: "Q",
+						checked: false,
+						color: "mh",
+						isHint: true,
+						num: "Q",
+						src: "../../static/image/card/12-mh.png",
+						type: "mh"
+					},
+					{
+						card: 11,
+						cardvalue: "J",
+						checked: false,
+						color: "ht",
+						isHint: true,
+						num: "J",
+						src: "../../static/image/card/11-ht.png",
+						type: "ht"
+					},
+					{
+						card: "10",
+						cardvalue: "10",
+						checked: false,
+						color: "hx",
+						isHint: true,
+						num: "10",
+						src: "../../static/image/card/10-hx.png",
+						type: "hx"
+					},
+					{
+						card: "10",
+						cardvalue: "10",
+						checked: false,
+						color: "mh",
+						isHint: true,
+						num: "10",
+						src: "../../static/image/card/10-mh.png",
+						type: "mh"
+					},
+					{
+						card: "8",
+						cardvalue: "8",
+						checked: false,
+						color: "hx",
+						isHint: true,
+						num: "8",
+						src: "../../static/image/card/8-hx.png",
+						type: "hx"
+					},
+					{
+						card: "7",
+						cardvalue: "7",
+						checked: false,
+						color: "ht",
+						isHint: true,
+						num: "7",
+						src: "../../static/image/card/7-ht.png",
+						type: "ht"
+					},
+					{
+						card: "7",
+						cardvalue: "7",
+						checked: false,
+						color: "fk",
+						isHint: true,
+						num: "7",
+						src: "../../static/image/card/7-fk.png",
+						type: "fk"
+					},
+					{
+						card: "5",
+						cardvalue: "5",
+						checked: false,
+						color: "fk",
+						isHint: true,
+						num: "5",
+						src: "../../static/image/card/5-fk.png",
+						type: "fk"
+					},
+					{
+						card: "4",
+						cardvalue: "4",
+						checked: false,
+						color: "hx",
+						isHint: true,
+						num: "4",
+						src: "../../static/image/card/4-hx.png",
+						type: "hx"
+					},
+					{
+						card: "3",
+						cardvalue: "3",
+						checked: false,
+						color: "ht",
+						isHint: true,
+						num: "3",
+						src: "../../static/image/card/3-ht.png",
+						type: "ht"
+					},
+
 				],
 				play4paper: [],
 				show1: false,
@@ -199,12 +325,12 @@
 				sendBtn: false,
 				chooseArray: [], //选择的牌
 				pushcard: [],
-				timer:5 ,  // 计时器
-				timeBtn:false,
-				landlordCard:[],   //地主牌
-				island:false,   //是否显示地主牌列表
-				landsure:false   //是否抢地主
-			}  
+				timer: 5, // 计时器
+				timeBtn: false,
+				landlordCard: [], //地主牌
+				island: false, //是否显示地主牌列表
+				landsure: false //是否抢地主
+			}
 		},
 		components: {
 			uniList,
@@ -215,174 +341,374 @@
 		},
 		methods: {
 			// 提示
-			testhit(num){
+			testhit(num) {
 				// 3,4,5,6,7,8,9,10, J , Q , K , A , 2 ,小王,大王
 				// 3,4,5,6,7,8,9,10, 11, 12, 13, 14, 15, 16 ,17
-				var card=[];
-				switch(num){
+				var card = [];
+				switch (num) {
+					case 0:
+						card = [
+
+						];
+						break;
 					case 1:
-					// 单张
-						card=[
-							{card: 3,isHint:true}
-							];
+						// 单张
+						card = [{
+							card: 3,
+							isHint: true
+						}];
 						break;
 					case 2:
-					// 对子
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true}
-							];
+						// 对子
+						card = [{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							}
+						];
 						break;
 					case 3:
-					// 三张
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true}
-							];
+						// 三张
+						card = [{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							}
+						];
 						break;
 					case 4:
-					// 三带一
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true}
-							];
+						// 三带一
+						card = [{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							}
+						];
 						break;
 					case 5:
-					// 三带二
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true}
-							];
+						// 三带二
+						card = [{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							}
+						];
 						break;
 					case 6:
-					// 四带二
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true}
-							];
+						// 四带二
+						card = [{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							}
+						];
 						break;
 					case 7:
-					// 四带两对
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true},
-							{card: 5,isHint:true},
-							{card: 5,isHint:true}
-							];
+						// 四带两对
+						card = [{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							},
+							{
+								card: 5,
+								isHint: true
+							},
+							{
+								card: 5,
+								isHint: true
+							}
+						];
 						break;
 					case 8:
-					// 顺子
-						card=[
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 5,isHint:true},
-							{card: 6,isHint:true},
-							{card: 7,isHint:true}
-							];
+						// 顺子
+						card = [{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							},
+							{
+								card: 5,
+								isHint: true
+							},
+							{
+								card: 6,
+								isHint: true
+							},
+							{
+								card: 7,
+								isHint: true
+							}
+						];
 						break;
 					case 9:
-					// 连对
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true},
-							{card: 5,isHint:true},
-							{card: 5,isHint:true}
-							];
+						// 连对
+						card = [{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							},
+							{
+								card: 5,
+								isHint: true
+							},
+							{
+								card: 5,
+								isHint: true
+							}
+						];
 						break;
 					case 10:
-					// 飞机
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true}
-							];
+						// 飞机
+						card = [{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							}
+						];
 						break;
 					case 11:
-					// 飞机带单
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true},
-							{card: 5,isHint:true},
-							{card: 6,isHint:true}
-							];
+						// 飞机带单
+						card = [{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							},
+							{
+								card: 5,
+								isHint: true
+							},
+							{
+								card: 6,
+								isHint: true
+							}
+						];
 						break;
 					case 12:
-					// 飞机带双
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true},
-							{card: 4,isHint:true},
-							{card: 5,isHint:true},
-							{card: 5,isHint:true},
-							{card: 6,isHint:true},
-							{card: 6,isHint:true}
-							];
+						// 飞机带双
+						card = [{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							},
+							{
+								card: 4,
+								isHint: true
+							},
+							{
+								card: 5,
+								isHint: true
+							},
+							{
+								card: 5,
+								isHint: true
+							},
+							{
+								card: 6,
+								isHint: true
+							},
+							{
+								card: 6,
+								isHint: true
+							}
+						];
 						break;
 					case 13:
-					// 炸弹
-						card=[
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true},
-							{card: 3,isHint:true}
-							];
+						// 炸弹
+						card = [{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							},
+							{
+								card: 3,
+								isHint: true
+							}
+						];
 						break;
 					case 14:
-					// 王炸
-						card=[
-							{card: 16,isHint:true},
-							{card: 17,isHint:true}
-							];
+						// 王炸
+						card = [{
+								card: 16,
+								isHint: true
+							},
+							{
+								card: 17,
+								isHint: true
+							}
+						];
 						break;
 				}
-				var which=this.hintCards(card,this.play3paper)
+				var which = this.hintCards(card, this.play3paper)
 				console.log(which);
 				console.log(this.play3paper)
 				this.play3paper.forEach(item => {
-					item.checked=false
+					item.checked = false
 				})
-				if(which){
-					for(var i=0;i<which.length;i++){
-						for(var j=0;j<this.play3paper.length;j++){
-							if(which[i]==this.play3paper[j].card  &&  this.play3paper[j].checked==false) {
-								this.play3paper[j].checked=true;
+				if (which) {
+					for (var i = 0; i < which.length; i++) {
+						for (var j = 0; j < this.play3paper.length; j++) {
+							if (which[i] == this.play3paper[j].card && this.play3paper[j].checked == false) {
+								this.play3paper[j].checked = true;
 								break
 							}
 						}
 					}
 				}
-				
-				
+
+
 			},
 			// 出牌
-			testshowcard(){
-				
+			testshowcard() {
+
 			},
 			sendpaper() {
 				// 生成指定发牌张数
@@ -401,9 +727,9 @@
 						}
 					});
 				});
-				this.play2=Arr[0]
-				this.play3=Arr[1]
-				this.play4=Arr[2]
+				this.play2 = Arr[0]
+				this.play3 = Arr[1]
+				this.play4 = Arr[2]
 				this.sendTwo();
 			},
 			generatePoker() {
@@ -419,18 +745,18 @@
 				var specialCard = [{
 						type: 'small',
 						cardvalue: 'small',
-						cartext:'JOKER',
+						cartext: 'JOKER',
 						checked: false,
 						card: 16,
-						isHint:true
+						isHint: true
 					},
 					{
 						type: 'big',
 						cardvalue: 'big',
-						cartext:'JOKER',
+						cartext: 'JOKER',
 						checked: false,
 						card: 17,
-						isHint:true
+						isHint: true
 					}
 				]
 				// 第四步:根据上述数组生成54张牌
@@ -457,8 +783,8 @@
 							cardvalue: cardValue[j],
 							checked: false,
 							card: card,
-							cartext:cardValue[j],
-							isHint:true
+							cartext: cardValue[j],
+							isHint: true
 						});
 					}
 				}
@@ -475,14 +801,14 @@
 				var allCards = this.generatePoker();
 				// 洗牌
 				var randomCards = this.shuffle(allCards);
-				randomCards=randomCards.slice(0, num)
-				for(var i=0;i<3;i++){
-					var index=Math.floor(Math.random()*randomCards.length)
-					var land=randomCards[index];
-					randomCards.splice(index,1);
+				randomCards = randomCards.slice(0, num)
+				for (var i = 0; i < 3; i++) {
+					var index = Math.floor(Math.random() * randomCards.length)
+					var land = randomCards[index];
+					randomCards.splice(index, 1);
 					this.landlordCard.push(land);
 				}
-				
+
 				return randomCards;
 			},
 			// 洗牌
@@ -539,7 +865,7 @@
 				}
 			},
 			// 改变当前自己牌的堆叠位置
-			mycardleft(play, item,index) {
+			mycardleft(play, item, index) {
 				var marginL = '-50rpx';
 				var marginT = '19rpx';
 				if (item.checked) {
@@ -547,7 +873,7 @@
 				} else {
 					marginT = '19rpx'
 				}
-				if(index==0){
+				if (index == 0) {
 					marginL = '0';
 				}
 				return {
@@ -575,7 +901,7 @@
 						if (_this.play3.length > 0) {
 							_this.show2 = !_this.show2;
 							_this.sendThree()
-						} 
+						}
 						_this.isclose()
 					}, 100)
 				} else {
@@ -597,9 +923,9 @@
 						if (_this.play4.length > 0) {
 							_this.show3 = !_this.show3;;
 							_this.sendFour()
-						} 
+						}
 						_this.isclose()
-						
+
 					}, 200)
 				} else {
 					_this.isclose()
@@ -619,7 +945,7 @@
 						// 发牌结束 关闭音频
 						if (_this.play2.length > 0) {
 							_this.sendTwo();
-						} 
+						}
 						_this.isclose()
 					}, 200)
 				} else {
@@ -627,34 +953,34 @@
 					return false
 				}
 			},
-			isclose(){
-				var _this=this
-				if(_this.play2.length ==0&&_this.play3.length==0&&_this.play4.length==0){
-					
+			isclose() {
+				var _this = this
+				if (_this.play2.length == 0 && _this.play3.length == 0 && _this.play4.length == 0) {
+
 					_this.audio.pause();
-					_this.timeBtn=true;
-					_this.showpaper=false;
+					_this.timeBtn = true;
+					_this.showpaper = false;
 					_this.counDown();
-					_this.island=true
+					_this.island = true
 				}
 			},
 			// 叫地主倒计时
-			counDown(){
-				var _this=this;
-				var time=setInterval(function(){
+			counDown() {
+				var _this = this;
+				var time = setInterval(function() {
 					_this.timer--;
-					if(_this.timer == 0){
+					if (_this.timer == 0) {
 						clearInterval(time);
-						_this.timeBtn=false;
+						_this.timeBtn = false;
 						_this.sendBtn = true;
 					}
-				},1000);
+				}, 1000);
 
 			},
 			// 牌的排序
 			sortCard(cards) {
 				return cards.sort((a, b) => {
-					let num = ['3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A', '2','small','big']
+					let num = ['3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A', '2', 'small', 'big']
 					let x = num.findIndex(n => n === a.cardvalue)
 					let y = num.findIndex(n => n === b.cardvalue)
 					if (x < y) {
@@ -682,40 +1008,40 @@
 						reloadarry.push(this.play3paper[index])
 					}
 				}
-				var result=this.judgeCards(this.chooseArray)
+				var result = this.judgeCards(this.chooseArray)
 				console.log(result)
-				if(result){
+				if (result) {
 					this.play3paper = reloadarry;
-				}else{
-					this.chooseArray=[];
+				} else {
+					this.chooseArray = [];
 					alert("你出的牌不符合规则")
 				}
-				
-				
+
+
 				// 对战时
 				// 1.AI监测当前是否有比上家大的牌
-				
+
 				// 2.选择牌后判断是否满足出牌规则
 				// this.judgeCards(this.chooseArray)
 				// 3.满足出牌规则后，再判断出牌是否大过上家
-				
+
 			},
 			// 抢地主
-			need(){
-				for(var i=0;i<this.landlordCard.length;i++){
+			need() {
+				for (var i = 0; i < this.landlordCard.length; i++) {
 					this.play3paper.push(this.landlordCard[i]);
 				}
 				this.sortCard(this.play3paper);
-				this.island=false;
-				this.timeBtn=false;
-				this.landsure=true;
+				this.island = false;
+				this.timeBtn = false;
+				this.landsure = true;
 			},
 			// 不抢地主
-			noNeed(){
-				this.timeBtn=false;
+			noNeed() {
+				this.timeBtn = false;
 				this.sendBtn = true;
 			}
-			
+
 		},
 		onLaunch: function() {
 			// 锁定横屏
@@ -767,10 +1093,12 @@
 		width: 70rpx;
 		height: 126rpx;
 	}
-	.cardshowlist{
-		width:55%;
-		margin:0 auto
+
+	.cardshowlist {
+		width: 55%;
+		margin: 0 auto
 	}
+
 	.cardnormal .card {
 		float: left;
 	}
@@ -838,7 +1166,7 @@
 		left: 50%;
 		top: 50%;
 		/* transform: translate(-50%, -50%); */
-		 transform: translate(-50%, -103%); 
+		transform: translate(-50%, -103%);
 		text-align: center;
 	}
 
@@ -884,8 +1212,8 @@
 		bottom: 10rpx;
 		left: 50%;
 		transform: translateX(-50%);
-		width:80%;
-		
+		width: 80%;
+
 	}
 
 	.play2 {
@@ -1024,8 +1352,8 @@
 	.paperOperate {
 		margin-bottom: 10rpx;
 		/* max-width:240rpx; */
-		margin:0 auto;
-		margin-bottom:20rpx;
+		margin: 0 auto;
+		margin-bottom: 20rpx;
 	}
 
 	.nopaper,
@@ -1046,26 +1374,31 @@
 	.mycarlist {
 		height: 180rpx
 	}
-	.cardohter{
-		padding:0;
+
+	.cardohter {
+		padding: 0;
 		background: transparent;
-		border:0
+		border: 0
 	}
-	.cardshowlist{
+
+	.cardshowlist {
 		position: absolute;
 		top: -69%;
 		left: 50%;
 		transform: translateX(-50%);
 		width: auto;
 	}
-	.fl{
-		float:left
+
+	.fl {
+		float: left
 	}
-	.grabCardbox{
+
+	.grabCardbox {
 		display: inline-block;
 	}
+
 	.noGrad,
-	.grabCard{
+	.grabCard {
 		width: 90rpx;
 		height: 40rpx;
 		background: #64b923;
@@ -1075,35 +1408,39 @@
 		line-height: 40rpx;
 		font-weight: 530;
 	}
-	.grabCard{
-		background:#f59104;
+
+	.grabCard {
+		background: #f59104;
 	}
-	.countDown text{
+
+	.countDown text {
 		font-size: 20rpx;
-		color:#FF5A5F;
-		position:absolute;
-		top:50%;
-		left:50%;
-		transform:translate(-50%,-50%);
-		margin-top:1rpx
+		color: #FF5A5F;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		margin-top: 1rpx
 	}
-	.countDown{
-		width:50rpx;
-		height:50rpx;
-		position:relative;
-		margin:0 20rpx;
-		margin-top:-15rpx;
-		
+
+	.countDown {
+		width: 50rpx;
+		height: 50rpx;
+		position: relative;
+		margin: 0 20rpx;
+		margin-top: -15rpx;
+
 	}
-	.countDown image{
-		width:50rpx;
-		height:50rpx;
+
+	.countDown image {
+		width: 50rpx;
+		height: 50rpx;
 	}
-	
+
 	/* 地主牌展示 */
-	.landlordCard .card{
-		float:left;
-		margin-right:20rpx;
+	.landlordCard .card {
+		float: left;
+		margin-right: 20rpx;
 		border: 1px solid #ccc;
 		border-image: initial;
 		border-color: #ccc;
@@ -1111,10 +1448,11 @@
 		border-radius: 4px;
 		font-family: monospace;
 		text-align: center;
-		padding:3rpx
+		padding: 3rpx
 	}
-	.landlordCard{
-		margin-top:20rpx;
-		
+
+	.landlordCard {
+		margin-top: 20rpx;
+
 	}
 </style>
