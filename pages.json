@@ -1,7 +1,7 @@
 {
 	"pages": [ 
 		{
-			"path": "pages/poker/socket2",
+			"path": "pages/poker/socket",
 			"style": {
 				"navigationBarTitleText": "棋牌"
 			}
