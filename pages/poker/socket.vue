@@ -50,7 +50,7 @@
 			<!-- 出牌展示区 -->
 			<!-- gif区域 -->
 			<view class="gifbox" v-show='leftbtnmsg.showgif'>
-				<image :src="leftbtnmsg.showgif?girsrc:''" mode=""></image>
+				<image :src="girsrc" mode=""></image>
 			</view>
 			<view class="cardlist clearfix cardnormal cardshowlist">
 
@@ -83,7 +83,7 @@
 				<!-- 出牌展示区 -->
 				<!-- gif区域 -->
 				<view class="gifbox" v-show='selfbtnmsg.showgif'>
-					<image :src="selfbtnmsg.showgif?girsrc:''" mode=""></image>
+					<image :src="girsrc" mode=""></image>
 				</view>
 				<view class="cardlist clearfix cardnormal cardshowlist flex juscon-center">
 
@@ -202,7 +202,7 @@
 			<!-- 出牌展示区 -->
 			<!-- gif区域 -->
 			<view class="gifbox" v-show='rightbtnmsg.showgif'>
-				<image :src="rightbtnmsg.showgif?girsrc:''" mode=""></image>
+				<image :src="girsrc" mode=""></image>
 			</view>
 			<view class="cardlist clearfix cardnormal cardshowlist flex juscon-end">
 
@@ -684,6 +684,7 @@
 					}
 					// 获取到的牌信息
 					if (data.card) {
+						console.log(data.card)
 						_this.cardslist = JSON.parse(data.card);
 						_this.beginTime = _this.formatDate();
 						_this.isboth++;
@@ -821,26 +822,27 @@
 				var which = _this.whichplay(id);
 				var index = _this.playOrder.indexOf(parseInt(id));
 				var selfuserID = _this.selfuserid;
+				var gif='';
 				if (msg == 1) {
 					var myaudio = new Audio();
 					myaudio.src = '/static/audio/pass.mp3';
 					myaudio.play();
-					_this.leftbtnmsg.showgif = false;
-					_this.girsrc = '';
+					gif= '';
 				} else if (msg == 2) {
 					var myaudio = new Audio();
 					myaudio.src = '/static/audio/pass2.mp3';
 					myaudio.play();
-					_this.leftbtnmsg.showgif = false;
-					_this.girsrc = '';
+					gif = '';
 				} else {
 					var result = _this.judgeCards(JSON.parse(msg));
+					console.log(result)
 					switch (result.cardKind) {
 						// 单张
 						case 'ONE':
 							var myaudio = new Audio();
 							myaudio.src = '/static/audio/' + result.val + '.mp3';
 							myaudio.play();
+							gif = '';
 							break;
 
 							// 对子
@@ -848,70 +850,70 @@
 							var myaudio = new Audio();
 							myaudio.src = '/static/audio/pairs' + result.val + '.mp3';
 							myaudio.play()
-							this.girsrc = '/static/image/gif/PAIRS.gif';
+							gif = '/static/image/gif/PAIRS.gif';
 							break;
 							// 顺子
 						case 'PROGRESSION':
 							var myaudio = new Audio();
 							myaudio.src = '/static/audio/PROGRESSION.mp3';
 							myaudio.play();
-							this.girsrc = '/static/image/gif/PROGRESSION.gif';
+							gif = '/static/image/gif/PROGRESSION.gif';
 							break;
 							//三不带
 						case 'THREE':
 							var myaudio = new Audio();
 							myaudio.src = '/static/audio/THREE.mp3';
 							myaudio.play();
-							this.girsrc = '/static/image/gif/THREE.gif';
+							gif = '/static/image/gif/THREE.gif';
 							break;
 							//炸弹
 						case 'BOMB':
 							var myaudio = new Audio();
 							myaudio.src = '/static/audio/BOMB.mp3';
 							myaudio.play();
-							this.girsrc = '/static/image/gif/BOMB.gif';
+							gif= '/static/image/gif/BOMB.gif';
 							break;
 							//王炸
 						case 'KINGBOMB':
 							var myaudio = new Audio();
 							myaudio.src = '/static/audio/KINGBOMB.mp3';
 							myaudio.play();
-							this.girsrc = '/static/image/gif/KINGBOMB.gif';
+							gif = '/static/image/gif/BOMB.gif';
 							break;
 							//三带一
 						case 'THREE_ONE':
 							var myaudio = new Audio();
 							myaudio.src = '/static/audio/THREE_ONE.mp3';
 							myaudio.play();
-							this.girsrc = '/static/image/gif/THREE_ONE.gif';
+							gif = '/static/image/gif/THREE_ONE.gif';
 							break;
 							//三带二
 						case 'THREE_TWO':
 							var myaudio = new Audio();
 							myaudio.src = '/static/audio/THREE_TWO.mp3';
 							myaudio.play();
-							this.girsrc = '/static/image/gif/THREE_TWO.gif';
+							gif = '/static/image/gif/THREE_TWO.gif';
 							break;
 							//四带二
 						case 'FOUR_TWO':
 							var myaudio = new Audio();
 							myaudio.src = '/static/audio/FOUR_TWO.mp3';
 							myaudio.play();
-							this.girsrc = '/static/image/gif/FOUR_TWO.gif';
+							gif = '/static/image/gif/FOUR_TWO.gif';
 							break;
 							//四带二对
 						case 'FOUR_PAIRS':
 							var myaudio = new Audio();
 							myaudio.src = '/static/audio/FOUR_TWO.mp3';
 							myaudio.play();
-							this.girsrc = '/static/image/gif/FOUR_TWO.mp3.gif';
+							gif = '/static/image/gif/FOUR_TWO.mp3.gif';
 							break;
 							//连对
 						case 'PROGRESSION_PAIRS':
 							var myaudio = new Audio();
 							myaudio.src = '/static/audio/PROGRESSION_PAIRS.mp3';
 							myaudio.play();
-							this.girsrc = '/static/image/gif/PROGRESSION_PAIRS.gif';
+							gif = '/static/image/gif/PROGRESSION_PAIRS.gif';
 							break;
 
 							//飞机
@@ -919,22 +921,24 @@
 							var myaudio = new Audio();
 							myaudio.src = '/static/audio/PLANE.mp3';
 							myaudio.play();
-							this.girsrc = '/static/image/gif/PLANE.gif';
+							gif = '/static/image/gif/PLANE.gif';
 							break;
 							//飞机带单
 						case 'PLANE_ONE':
 							var myaudio = new Audio();
 							myaudio.src = '/static/audio/PLANE.mp3';
 							myaudio.play();
-							this.girsrc = '/static/image/gif/PLANE.gif';
+							gif = '/static/image/gif/PLANE.gif';
 							break;
 							//飞机带双
 						case 'PLANE_PAIRS':
 							var myaudio = new Audio();
 							myaudio.src = '/static/audio/PLANE.mp3';
 							myaudio.play();
-							this.girsrc = '/static/image/gif/PLANE.gif';
+							gif = '/static/image/gif/PLANE.gif';
 							break;
+						default:
+							gif = '';
 
 					}
 				}
@@ -952,11 +956,16 @@
 						_this.leftbtnmsg.leftText = '要不起';
 						_this.sendRecord[index] = null;
 					} else {
-						_this.leftbtnmsg.showgif = true;
-						setTimeout(function() {
-							_this.leftbtnmsg.showgif = false;
-							_this.girsrc = '';
-						}, 1500)
+						if(gif!=''){
+							_this.girsrc=gif+'?time='+Date.parse(new Date());
+							_this.leftbtnmsg.showgif = true;
+							setTimeout(function() {
+								_this.girsrc = '../../static/image/null.png?time='+Date.parse(new Date());
+								_this.leftbtnmsg.showgif = false;
+								
+							}, 1100)
+						}
+					
 						var cards = JSON.parse(msg);
 						_this.leftbtnmsg.leftChoose = _this.sortCard(cards).reverse();
 						_this.sendRecord[index] = cards;
@@ -980,11 +989,16 @@
 						_this.rightbtnmsg.rightText = '要不起';
 						_this.sendRecord[index] = null;
 					} else {
-						_this.rightbtnmsg.showgif = true;
-						setTimeout(function() {
-							_this.rightbtnmsg.showgif = false;
-							_this.girsrc = '';
-						}, 1500)
+						if(gif!=''){
+							_this.girsrc=gif+'?time='+Date.parse(new Date());
+							_this.rightbtnmsg.showgif = true;
+							
+							setTimeout(function() {
+								_this.girsrc = '../../static/image/null.png?time='+Date.parse(new Date());
+								_this.rightbtnmsg.showgif = false;
+								
+							}, 1100)
+						}
 						var cards = JSON.parse(msg);
 						_this.rightbtnmsg.rightChoose = _this.sortCard(cards).reverse();
 						_this.sendRecord[index] = cards;
@@ -996,11 +1010,20 @@
 						}
 					}
 				} else {
-					_this.selfbtnmsg.showgif = true;
-					setTimeout(function() {
+					if(msg==1||msg==2){
 						_this.selfbtnmsg.showgif = false;
-						_this.girsrc = '';
-					}, 1500)
+						
+					}else{
+						if(gif != ''){
+							_this.girsrc=gif+'?time='+Date.parse(new Date());
+							_this.selfbtnmsg.showgif = true;
+							
+							setTimeout(function() {
+								_this.girsrc = '../../static/image/null.png?time='+Date.parse(new Date());
+								_this.selfbtnmsg.showgif = false;
+							}, 1100)
+						}
+					}
 					if (_this.palySpaper.length == 0) {
 						_this.finish(id);
 						_this.clearall();
@@ -1932,15 +1955,15 @@
 	.gifbox {
 		position: absolute;
 		left: 0;
-		top: -40%;
+		top: -29%;
 		z-index: 999;
 		width: 1rem;
 		height: 1rem;
 	}
 
 	.gifbox image {
-		width: 1rem;
-		height: 1rem;
+		width: 1.3rem;
+		height: 1.3rem;
 	}
 
 	.startbtn image {
