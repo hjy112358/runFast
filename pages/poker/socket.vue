@@ -473,6 +473,7 @@
 		},
 		created() {
 			this.remFn(); //加载rem
+			this.getBaseconfig();
 			// window.addEventListener('beforeunload', e => this.back(e))
 		},
 		mounted() {
@@ -515,6 +516,26 @@
 			},
 		},
 		methods: {
+			// 获取基础参数
+			getBaseconfig() {
+				uni.request({
+					url: requestUrl.baseConfig,
+					method: "get",
+					data: {
+						keyword: 'poker2'
+					},
+					header: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					success: res => {
+						if (res.data.success) {
+							console.log(res.data.data);
+							var baseconfig = res.data.data;
+							this.double=baseconfig.poker2_difen
+						}
+					}
+				});
+			},
 			
 			//等待超时接下来的操作
 			timeOut() {

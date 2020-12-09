@@ -5,7 +5,8 @@ let requestUrl = {
 	websocketUrl: 'ws://' + base + '/webSocket4PDK/', //websocket地址
 	finishGame: 'http://' + base + '/game/getGameScore', //结束游戏
 	exitRoom: 'http://' + base + '/game/user_exitRoom', //退出房间
-	isFriend: 'http://' + base + '/friendlist/isFrined' //判断是否是好友
+	isFriend: 'http://' + base + '/friendlist/isFrined' ,//判断是否是好友
+	baseConfig:'http://'+base+'/getConfig',  //基础参数
 }
 
 export {
